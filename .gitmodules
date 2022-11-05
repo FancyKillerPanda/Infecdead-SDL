@@ -1,0 +1,9 @@
+[submodule "dep/SDL"]
+	path = dep/SDL
+	url = https://github.com/libsdl-org/SDL
+[submodule "dep/SDL_image"]
+	path = dep/SDL_image
+	url = https://github.com/libsdl-org/SDL_image
+[submodule "dep/SDL_ttf"]
+	path = dep/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf

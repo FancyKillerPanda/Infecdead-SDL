@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #include "common.hpp"
 #include "game/game.hpp"
@@ -36,6 +38,24 @@ void Game::run() {
 	std::chrono::high_resolution_clock::time_point previousTime = std::chrono::high_resolution_clock::now();
 	f64 lagMs = 0.0;
 	
+	TTF_Font* font = TTF_OpenFont("res/fonts/Pixeltype.ttf", 30);
+	if (!font) {
+		log::error("Failed to open font.\n%s", SDL_GetError());
+		return;
+	}
+
+	SDL_Surface* textSurface = TTF_RenderUTF8_Solid_Wrapped(font, "This is some test text.", SDL_Color { 0, 0, 0, 255 }, 0);
+	if (!textSurface) {
+		log::error("Failed to create text surface.\n%s", SDL_GetError());
+		return;
+	}
+
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	if (!textSurface) {
+		log::error("Failed to create text texture.\n%s", SDL_GetError());
+		return;
+	}
+	
 	while (running) {
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		f64 elapsedMs = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count() / 1000.0;
@@ -49,6 +69,8 @@ void Game::run() {
 			lagMs -= MS_PER_UPDATE;
 		}
 
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, textTexture, nullptr, nullptr);
 		render(lagMs / MS_PER_UPDATE);
 	}
 }
@@ -71,7 +93,7 @@ void Game::update() {
 
 void Game::render(f64 deltaTime) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderClear(renderer);
+	// SDL_RenderClear(renderer);
 
 	SDL_RenderPresent(renderer);
 }

@@ -22,3 +22,12 @@ inline SDL_Rect to_rect(glm::vec4 box) {
 		(s32) box.w,
 	};
 }
+
+inline SDL_Rect to_rect(glm::vec2 position, glm::vec2 dimensions) {
+	return SDL_Rect {
+		(s32) position.x,
+		(s32) position.y,
+		(s32) dimensions.x,
+		(s32) dimensions.y,
+	};
+}

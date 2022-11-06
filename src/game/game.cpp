@@ -8,6 +8,7 @@
 
 #include "common.hpp"
 #include "game/game.hpp"
+#include "graphics/texture.hpp"
 #include "utility/log.hpp"
 #include "utility/utility.hpp"
 
@@ -50,11 +51,8 @@ void Game::run() {
 		return;
 	}
 
-	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-	if (!textSurface) {
-		log::error("Failed to create text texture.\n%s", SDL_GetError());
-		return;
-	}
+	Texture textTexture { renderer, textSurface };
+	SDL_FreeSurface(textSurface);
 	
 	while (running) {
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
@@ -70,7 +68,7 @@ void Game::run() {
 		}
 
 		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, textTexture, nullptr, nullptr);
+		SDL_RenderCopy(renderer, textTexture.get(), nullptr, nullptr);
 		render(lagMs / MS_PER_UPDATE);
 	}
 }

@@ -14,11 +14,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(HEADERS
 	common.hpp
 	game/game.hpp
+	graphics/texture.hpp
 	utility/log.hpp utility/utility.hpp
 )
 set(SOURCES
 	main.cpp
 	game/game.cpp
+	graphics/texture.cpp
 	utility/log.cpp
 )
 list(TRANSFORM HEADERS PREPEND src/)

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "log.hpp"
+#include "utility/log.hpp"
 
 namespace log {
 

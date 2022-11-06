@@ -7,3 +7,6 @@
 [submodule "dep/SDL_ttf"]
 	path = dep/SDL_ttf
 	url = https://github.com/libsdl-org/SDL_ttf
+[submodule "dep/glm"]
+	path = dep/glm
+	url = https://github.com/g-truc/glm

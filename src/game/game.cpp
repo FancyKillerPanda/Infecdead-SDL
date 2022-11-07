@@ -88,9 +88,10 @@ void Game::render(f64 deltaTime) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	// SDL_RenderClear(renderer);
 
-	shapes::draw_rectangle(renderer, { 100, 100, 200, 100 }, SDL_Color { 255, 0, 0, 255 });
-	shapes::fill_rectangle(renderer, { 400, 200, 100, 200 }, SDL_Color { 255, 0, 0, 255 });
-	shapes::fill_circle(renderer, { 500, 500 }, 400, SDL_Color { 0, 0, 0, 255 });
+	// shapes::draw_rectangle(renderer, { 100, 100, 200, 100 }, SDL_Color { 255, 0, 0, 255 });
+	// shapes::fill_rectangle(renderer, { 400, 200, 100, 200 }, SDL_Color { 255, 0, 0, 255 });
+	shapes::fill_circle(renderer, { 400, 400 }, 100, SDL_Color { 0, 0, 0, 255 });
+	shapes::draw_circle(renderer, { 500, 500 }, 100, 20, SDL_Color { 255, 0, 0, 255 });
 
 	SDL_RenderPresent(renderer);
 }
@@ -127,7 +128,7 @@ bool Game::create_window() {
 
 	log::info("Created SDL window.");
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	if (!renderer) {
 		log::error("SDL_CreateRenderer() failed.\n", SDL_GetError());
 		return false;

@@ -2,6 +2,7 @@
 
 #include "common.hpp"
 #include "graphics/shapes.hpp"
+#include "utility/log.hpp"
 #include "utility/utility.hpp"
 
 #define SAVE_CURRENT_COLOUR() \
@@ -30,6 +31,37 @@ namespace shapes {
 		SDL_RenderFillRect(renderer, &rect);
 
 		RESET_COLOUR();
+	}
+
+	void draw_circle(SDL_Renderer* renderer, glm::vec2 centre, s32 radius, s32 width, SDL_Color colour) {
+		SDL_Texture* texture = SDL_CreateTexture(renderer, 0, SDL_TEXTUREACCESS_TARGET, radius * 2, radius * 2);
+		if (!texture) {
+			log::error("Failed to create texture for circle drawing.\n%s", SDL_GetError());
+			return;
+		}
+
+		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
+		SDL_BlendMode oldBlendMode;
+		SDL_GetRenderDrawBlendMode(renderer, &oldBlendMode);
+		SDL_Texture* oldRenderTarget = SDL_GetRenderTarget(renderer);
+
+		SDL_SetRenderTarget(renderer, texture);
+		fill_circle(renderer, glm::vec2 { radius, radius }, radius, colour);
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+		fill_circle(renderer, glm::vec2 { radius, radius }, radius - width, SDL_Color { 0, 0, 0, 0 });
+		SDL_SetRenderTarget(renderer, oldRenderTarget);
+
+		SDL_Rect rect = {
+			(s32) (centre.x - radius),
+			(s32) (centre.y - radius),
+			radius * 2,
+			radius * 2,
+		};
+		SDL_RenderCopy(renderer, texture, nullptr, &rect);
+
+		SDL_DestroyTexture(texture);
+		SDL_SetRenderDrawBlendMode(renderer, oldBlendMode);
 	}
 
 	void fill_circle(SDL_Renderer* renderer, glm::vec2 centre, s32 radius, SDL_Color colour) {

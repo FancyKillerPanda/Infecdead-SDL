@@ -16,9 +16,6 @@ public:
 	void change_colour(SDL_Color newColour);
 
 private:
-	static void size_wrapped(TTF_Font* font, const u8* message, s32* width, s32* height);
-
-private:
 	const u8* message = nullptr;
 
 	SDL_Renderer* renderer = nullptr;

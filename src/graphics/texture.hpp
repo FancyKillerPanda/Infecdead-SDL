@@ -10,6 +10,7 @@
 
 class Texture {
 public:
+	Texture() = default;
 	Texture(SDL_Renderer* renderer, const u8* filepath);
 	Texture(SDL_Renderer* renderer, SDL_Surface* surface);
 	~Texture();
@@ -24,9 +25,12 @@ public:
 
 	void render(glm::vec2 position);
 
+public:
+	glm::vec2 dimensions;
+
 private:
 	bool init_missing_texture();
-	void get_dimensions();
+	void init_dimensions();
 
 private:
 	// TODO(fkp): Maybe cache filepaths?
@@ -35,6 +39,4 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	const u8* filepath = nullptr;
 	SDL_Texture* texture = nullptr;
-
-	glm::vec2 dimensions;
 };

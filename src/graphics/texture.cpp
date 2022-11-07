@@ -17,7 +17,7 @@ Texture::Texture(SDL_Renderer* renderer, const u8* filepath)
 		log::info("Loaded texture '%s'.", filepath);
 	}
 
-	get_dimensions();
+	init_dimensions();
 	referencesCount[texture] += 1;
 }
 
@@ -34,7 +34,7 @@ Texture::Texture(SDL_Renderer* renderer, SDL_Surface* surface)
 		log::info("Loaded texture from surface.");
 	}
 
-	get_dimensions();
+	init_dimensions();
 	referencesCount[texture] += 1;
 }
 
@@ -134,12 +134,12 @@ bool Texture::init_missing_texture() {
 	return true;
 }
 
-void Texture::get_dimensions() {
+void Texture::init_dimensions() {
 	s32 width;
 	s32 height;
 
 	if (SDL_QueryTexture(texture, nullptr, nullptr, &width, &height) != 0) {
-		log::error("Failed to get texture dimensions.\n%s", SDL_GetError());
+		log::error("Failed to init texture dimensions.\n%s", SDL_GetError());
 		return;
 	}
 

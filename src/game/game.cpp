@@ -8,6 +8,7 @@
 
 #include "common.hpp"
 #include "game/game.hpp"
+#include "graphics/text.hpp"
 #include "graphics/texture.hpp"
 #include "utility/log.hpp"
 #include "utility/utility.hpp"
@@ -45,14 +46,7 @@ void Game::run() {
 		return;
 	}
 
-	SDL_Surface* textSurface = TTF_RenderUTF8_Solid_Wrapped(font, "This is some test text.", SDL_Color { 0, 0, 0, 255 }, 0);
-	if (!textSurface) {
-		log::error("Failed to create text surface.\n%s", SDL_GetError());
-		return;
-	}
-
-	Texture textTexture { renderer, textSurface };
-	SDL_FreeSurface(textSurface);
+	Text text { renderer, font, "This is some\nmultiline test text.", SDL_Color { 0, 0, 0, 255 }};
 	
 	while (running) {
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
@@ -68,7 +62,7 @@ void Game::run() {
 		}
 
 		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, textTexture.get(), nullptr, nullptr);
+		text.render({ 0, 0 });
 		render(lagMs / MS_PER_UPDATE);
 	}
 }

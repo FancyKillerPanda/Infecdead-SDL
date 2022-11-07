@@ -10,20 +10,20 @@
 
 namespace shapes {
 	
-	void draw_rectangle(SDL_Renderer* renderer, glm::vec2 position, glm::vec2 dimensions, SDL_Color colour) {
+	void draw_rectangle(SDL_Renderer* renderer, glm::vec4 box, SDL_Color colour) {
 		SAVE_CURRENT_COLOUR();
 
-		SDL_Rect rect = to_rect(position, dimensions);
+		SDL_Rect rect = to_rect(box);
 		SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
 		SDL_RenderDrawRect(renderer, &rect);
 
 		RESET_COLOUR();
 	}
 
-	void fill_rectangle(SDL_Renderer* renderer, glm::vec2 position, glm::vec2 dimensions, SDL_Color colour) {
+	void fill_rectangle(SDL_Renderer* renderer, glm::vec4 box, SDL_Color colour) {
 		SAVE_CURRENT_COLOUR();
 
-		SDL_Rect rect = to_rect(position, dimensions);
+		SDL_Rect rect = to_rect(box);
 		SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
 		SDL_RenderFillRect(renderer, &rect);
 

@@ -8,6 +8,7 @@
 
 #include "common.hpp"
 #include "game/game.hpp"
+#include "graphics/shapes.hpp"
 #include "graphics/text.hpp"
 #include "graphics/texture.hpp"
 #include "utility/log.hpp"
@@ -86,6 +87,9 @@ void Game::update() {
 void Game::render(f64 deltaTime) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	// SDL_RenderClear(renderer);
+
+	shapes::draw_rectangle(renderer, { 100, 100 }, { 200, 100 }, SDL_Color { 255, 0, 0, 255 });
+	shapes::fill_rectangle(renderer, { 400, 200 }, { 100, 200 }, SDL_Color { 255, 0, 0, 255 });
 
 	SDL_RenderPresent(renderer);
 }

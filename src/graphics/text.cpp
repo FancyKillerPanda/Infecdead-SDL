@@ -1,6 +1,6 @@
 #include <string>
 
-#include "text.hpp"
+#include "graphics/text.hpp"
 
 Text::Text(SDL_Renderer* renderer, TTF_Font* font, const u8* message, SDL_Color colour) 
 	: renderer(renderer), font(font), message(message) {

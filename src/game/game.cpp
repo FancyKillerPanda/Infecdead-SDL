@@ -89,6 +89,7 @@ void Game::render(f64 deltaTime) {
 	// SDL_RenderClear(renderer);
 
 	shapes::fill_rounded_rectangle(renderer, { 100, 100, 200, 100 }, 10, SDL_Color { 255, 0, 0, 255 });
+	shapes::draw_rounded_rectangle(renderer, { 500, 500, 100, 200 }, 20, 10, SDL_Color { 0, 255, 0, 255 });
 
 	SDL_RenderPresent(renderer);
 }

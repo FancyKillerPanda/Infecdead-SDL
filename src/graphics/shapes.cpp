@@ -92,6 +92,32 @@ namespace shapes {
 		SDL_RenderGeometry(renderer, nullptr, vertices.data(), vertices.size(), nullptr, 0);
 	}
 
+	void draw_rounded_rectangle(SDL_Renderer* renderer, glm::vec4 box, s32 cornerRadius, s32 width, SDL_Color colour) {
+		SDL_Texture* texture = SDL_CreateTexture(renderer, 0, SDL_TEXTUREACCESS_TARGET, box.z, box.w);
+		if (!texture) {
+			log::error("Failed to create texture for rounded rectangle drawing.\n%s", SDL_GetError());
+			return;
+		}
+
+		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
+		SDL_BlendMode oldBlendMode;
+		SDL_GetRenderDrawBlendMode(renderer, &oldBlendMode);
+		SDL_Texture* oldRenderTarget = SDL_GetRenderTarget(renderer);
+
+		SDL_SetRenderTarget(renderer, texture);
+		fill_rounded_rectangle(renderer, { 0, 0, box.z, box.w }, cornerRadius, colour);
+		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
+		fill_rounded_rectangle(renderer, { width, width, box.z - (width * 2), box.w - (width * 2) }, cornerRadius, SDL_Color { 0, 0, 0, 0 });
+		SDL_SetRenderTarget(renderer, oldRenderTarget);
+
+		SDL_Rect rect = to_rect(box);
+		SDL_RenderCopy(renderer, texture, nullptr, &rect);
+
+		SDL_DestroyTexture(texture);
+		SDL_SetRenderDrawBlendMode(renderer, oldBlendMode);
+	}
+
 	void fill_rounded_rectangle(SDL_Renderer* renderer, glm::vec4 box, s32 cornerRadius, SDL_Color colour) {
 		SAVE_CURRENT_COLOUR();
 

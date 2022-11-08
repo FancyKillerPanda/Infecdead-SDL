@@ -4,6 +4,11 @@
 
 #include "common.hpp"
 
+enum class GameState {
+	None,
+	MainMenu_Home,
+};
+
 class Game {
 public:
 	Game();
@@ -26,4 +31,10 @@ private:
 
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
+
+	GameState previousState = GameState::None;
+	GameState currentState = GameState::None;
+	GameState nextState = GameState::None;
+
+	TTF_Font* primaryFont = nullptr;
 };

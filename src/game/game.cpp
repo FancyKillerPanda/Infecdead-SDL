@@ -23,6 +23,15 @@ f64 MS_PER_UPDATE = 10.0;
 Game::Game() {
 	create_window();
 
+	constexpr const u8* FONT_PATH = "res/fonts/Pixeltype.ttf";
+	constexpr const u32 FONT_SIZE = 30;
+	primaryFont = TTF_OpenFont(FONT_PATH, FONT_SIZE);
+	if (!primaryFont) {
+		log::error("Failed to open font '%s' at size %u.\n%s", FONT_PATH, FONT_SIZE, SDL_GetError());
+		return;
+	}
+
+	currentState = GameState::MainMenu_Home;
 	running = true;
 	log::info("Game is running.");
 }
@@ -41,14 +50,6 @@ void Game::run() {
 	std::chrono::high_resolution_clock::time_point previousTime = std::chrono::high_resolution_clock::now();
 	f64 lagMs = 0.0;
 	
-	TTF_Font* font = TTF_OpenFont("res/fonts/Pixeltype.ttf", 30);
-	if (!font) {
-		log::error("Failed to open font.\n%s", SDL_GetError());
-		return;
-	}
-
-	Text text { renderer, font, "This is some\nmultiline test text.", SDL_Color { 0, 0, 0, 255 }};
-	
 	while (running) {
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		f64 elapsedMs = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count() / 1000.0;
@@ -62,8 +63,6 @@ void Game::run() {
 			lagMs -= MS_PER_UPDATE;
 		}
 
-		SDL_RenderClear(renderer);
-		text.render({ 0, 0 });
 		render(lagMs / MS_PER_UPDATE);
 	}
 }
@@ -82,14 +81,29 @@ void Game::handle_input() {
 }
 
 void Game::update() {
+	switch (currentState) {
+	case GameState::None:
+		log::error("Current game state is None. Quitting.");
+		running = false;
+
+		return;
+	
+	default:
+		break;
+	};
 }
 
 void Game::render(f64 deltaTime) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	// SDL_RenderClear(renderer);
+	SDL_RenderClear(renderer);
 
-	shapes::fill_rounded_rectangle(renderer, { 100, 100, 200, 100 }, 10, SDL_Color { 255, 0, 0, 255 });
-	shapes::draw_rounded_rectangle(renderer, { 500, 500, 100, 200 }, 20, 10, SDL_Color { 0, 255, 0, 255 });
+	switch (currentState) {
+	case GameState::MainMenu_Home:
+		break;
+	
+	default:
+		break;
+	};
 
 	SDL_RenderPresent(renderer);
 }

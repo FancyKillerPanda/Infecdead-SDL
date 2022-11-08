@@ -65,7 +65,7 @@ namespace shapes {
 	}
 
 	void fill_circle(SDL_Renderer* renderer, glm::vec2 centre, s32 radius, SDL_Color colour) {
-		s32 numTriangles = radius / 3;
+		s32 numTriangles = max(radius / 3, 16);
 		std::vector<SDL_Vertex> vertices {};
 
 		// TODO(fkp): Optimise with an index array.
@@ -90,6 +90,36 @@ namespace shapes {
 		}
 
 		SDL_RenderGeometry(renderer, nullptr, vertices.data(), vertices.size(), nullptr, 0);
+	}
+
+	void fill_rounded_rectangle(SDL_Renderer* renderer, glm::vec4 box, s32 cornerRadius, SDL_Color colour) {
+		SAVE_CURRENT_COLOUR();
+
+		SDL_Rect horizontalRect = {
+			(s32) box.x,
+			(s32) (box.y + cornerRadius),
+			(s32) box.z,
+			(s32) (box.w - (cornerRadius * 2)),
+		};
+
+		SDL_Rect verticalRect = {
+			(s32) (box.x + cornerRadius),
+			(s32) box.y,
+			(s32) (box.z - (cornerRadius * 2)),
+			(s32) box.w,
+		};
+
+		SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
+		SDL_RenderFillRect(renderer, &horizontalRect);
+		SDL_RenderFillRect(renderer, &verticalRect);
+		
+		// Corners
+		fill_circle(renderer, { box.x + cornerRadius, box.y + cornerRadius }, cornerRadius, colour);
+		fill_circle(renderer, { box.x + box.z - cornerRadius, box.y + cornerRadius }, cornerRadius, colour);
+		fill_circle(renderer, { box.x + cornerRadius, box.y + box.w - cornerRadius }, cornerRadius, colour);
+		fill_circle(renderer, { box.x + box.z - cornerRadius, box.y + box.w - cornerRadius }, cornerRadius, colour);
+
+		RESET_COLOUR();
 	}
 
 }

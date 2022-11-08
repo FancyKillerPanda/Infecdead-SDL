@@ -5,35 +5,43 @@
 #include "utility/log.hpp"
 #include "utility/utility.hpp"
 
-#define SAVE_CURRENT_COLOUR() \
+#define SAVE_RENDER_DATA() \
 	Uint8 r, g, b, a; \
-	SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a)
+	SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a); \
+	SDL_BlendMode oldBlendMode; \
+	SDL_GetRenderDrawBlendMode(renderer, &oldBlendMode); \
+	SDL_Texture* oldRenderTarget = SDL_GetRenderTarget(renderer);
 
-#define RESET_COLOUR() SDL_SetRenderDrawColor(renderer, r, g, b, a)
+#define RESET_RENDER_DATA() \
+	SDL_SetRenderDrawBlendMode(renderer, oldBlendMode); \
+	SDL_SetRenderTarget(renderer, oldRenderTarget); \
+	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 namespace shapes {
 	
 	void draw_rectangle(SDL_Renderer* renderer, glm::vec4 box, SDL_Color colour) {
-		SAVE_CURRENT_COLOUR();
+		SAVE_RENDER_DATA();
 
 		SDL_Rect rect = to_rect(box);
 		SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
 		SDL_RenderDrawRect(renderer, &rect);
 
-		RESET_COLOUR();
+		RESET_RENDER_DATA();
 	}
 
 	void fill_rectangle(SDL_Renderer* renderer, glm::vec4 box, SDL_Color colour) {
-		SAVE_CURRENT_COLOUR();
+		SAVE_RENDER_DATA();
 
 		SDL_Rect rect = to_rect(box);
 		SDL_SetRenderDrawColor(renderer, colour.r, colour.g, colour.b, colour.a);
 		SDL_RenderFillRect(renderer, &rect);
 
-		RESET_COLOUR();
+		RESET_RENDER_DATA();
 	}
 
 	void draw_circle(SDL_Renderer* renderer, glm::vec2 centre, s32 radius, s32 width, SDL_Color colour) {
+		SAVE_RENDER_DATA();
+		
 		SDL_Texture* texture = SDL_CreateTexture(renderer, 0, SDL_TEXTUREACCESS_TARGET, radius * 2, radius * 2);
 		if (!texture) {
 			log::error("Failed to create texture for circle drawing.\n%s", SDL_GetError());
@@ -42,15 +50,12 @@ namespace shapes {
 
 		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 
-		SDL_BlendMode oldBlendMode;
-		SDL_GetRenderDrawBlendMode(renderer, &oldBlendMode);
-		SDL_Texture* oldRenderTarget = SDL_GetRenderTarget(renderer);
-
 		SDL_SetRenderTarget(renderer, texture);
 		fill_circle(renderer, glm::vec2 { radius, radius }, radius, colour);
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 		fill_circle(renderer, glm::vec2 { radius, radius }, radius - width, SDL_Color { 0, 0, 0, 0 });
-		SDL_SetRenderTarget(renderer, oldRenderTarget);
+
+		RESET_RENDER_DATA();
 
 		SDL_Rect rect = {
 			(s32) (centre.x - radius),
@@ -59,9 +64,7 @@ namespace shapes {
 			radius * 2,
 		};
 		SDL_RenderCopy(renderer, texture, nullptr, &rect);
-
 		SDL_DestroyTexture(texture);
-		SDL_SetRenderDrawBlendMode(renderer, oldBlendMode);
 	}
 
 	void fill_circle(SDL_Renderer* renderer, glm::vec2 centre, s32 radius, SDL_Color colour) {
@@ -93,6 +96,8 @@ namespace shapes {
 	}
 
 	void draw_rounded_rectangle(SDL_Renderer* renderer, glm::vec4 box, s32 cornerRadius, s32 width, SDL_Color colour) {
+		SAVE_RENDER_DATA();
+		
 		SDL_Texture* texture = SDL_CreateTexture(renderer, 0, SDL_TEXTUREACCESS_TARGET, box.z, box.w);
 		if (!texture) {
 			log::error("Failed to create texture for rounded rectangle drawing.\n%s", SDL_GetError());
@@ -101,25 +106,20 @@ namespace shapes {
 
 		SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 
-		SDL_BlendMode oldBlendMode;
-		SDL_GetRenderDrawBlendMode(renderer, &oldBlendMode);
-		SDL_Texture* oldRenderTarget = SDL_GetRenderTarget(renderer);
-
 		SDL_SetRenderTarget(renderer, texture);
 		fill_rounded_rectangle(renderer, { 0, 0, box.z, box.w }, cornerRadius, colour);
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 		fill_rounded_rectangle(renderer, { width, width, box.z - (width * 2), box.w - (width * 2) }, cornerRadius, SDL_Color { 0, 0, 0, 0 });
-		SDL_SetRenderTarget(renderer, oldRenderTarget);
+
+		RESET_RENDER_DATA();
 
 		SDL_Rect rect = to_rect(box);
 		SDL_RenderCopy(renderer, texture, nullptr, &rect);
-
 		SDL_DestroyTexture(texture);
-		SDL_SetRenderDrawBlendMode(renderer, oldBlendMode);
 	}
 
 	void fill_rounded_rectangle(SDL_Renderer* renderer, glm::vec4 box, s32 cornerRadius, SDL_Color colour) {
-		SAVE_CURRENT_COLOUR();
+		SAVE_RENDER_DATA();
 
 		SDL_Rect horizontalRect = {
 			(s32) box.x,
@@ -145,10 +145,10 @@ namespace shapes {
 		fill_circle(renderer, { box.x + cornerRadius, box.y + box.w - cornerRadius }, cornerRadius, colour);
 		fill_circle(renderer, { box.x + box.z - cornerRadius, box.y + box.w - cornerRadius }, cornerRadius, colour);
 
-		RESET_COLOUR();
+		RESET_RENDER_DATA();
 	}
 
 }
 
-#undef RESET_COLOUR
-#undef SAVE_CURRENT_COLOUR
+#undef RESET_RENDER_DATA
+#undef SAVE_RENDER_DATA

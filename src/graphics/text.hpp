@@ -15,6 +15,8 @@ public:
 	void render(glm::vec2 position);
 	void change_colour(SDL_Color newColour);
 
+	const Texture& get_texture() { return texture; }
+
 private:
 	const u8* message = nullptr;
 

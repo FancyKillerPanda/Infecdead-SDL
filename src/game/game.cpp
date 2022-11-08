@@ -24,12 +24,19 @@ Game::Game() {
 	create_window();
 
 	constexpr const u8* FONT_PATH = "res/fonts/Pixeltype.ttf";
-	constexpr const u32 FONT_SIZE = 30;
+	constexpr const u32 FONT_SIZE = 48;
 	primaryFont = TTF_OpenFont(FONT_PATH, FONT_SIZE);
 	if (!primaryFont) {
 		log::error("Failed to open font '%s' at size %u.\n%s", FONT_PATH, FONT_SIZE, SDL_GetError());
 		return;
 	}
+
+	mainMenuHomeButtons = ButtonGroup(renderer, {
+		Text { renderer, primaryFont, "Play", SDL_Color { 0, 0, 0, 255 } },
+		Text { renderer, primaryFont, "Help", SDL_Color { 0, 0, 0, 255 } },
+		Text { renderer, primaryFont, "Options", SDL_Color { 0, 0, 0, 255 } },
+		Text { renderer, primaryFont, "About", SDL_Color { 0, 0, 0, 255 } },
+	}, {});
 
 	currentState = GameState::MainMenu_Home;
 	running = true;
@@ -77,6 +84,15 @@ void Game::handle_input() {
 
 			break;
 		}
+
+		switch (currentState) {
+		case GameState::MainMenu_Home:
+			mainMenuHomeButtons.handle_input(event);
+			break;
+		
+		default:
+			break;
+		}
 	}
 }
 
@@ -99,6 +115,7 @@ void Game::render(f64 deltaTime) {
 
 	switch (currentState) {
 	case GameState::MainMenu_Home:
+		mainMenuHomeButtons.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT * 55 / 100 }, { 0, VIEWPORT_HEIGHT * 1 / 10 });
 		break;
 	
 	default:
@@ -149,7 +166,7 @@ bool Game::create_window() {
 	log::info("Created SDL renderer.");
 
 	// Sets attributes for rendering.
-	SDL_RenderSetLogicalSize(renderer, 1920, 1080);
+	SDL_RenderSetLogicalSize(renderer, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	return true;

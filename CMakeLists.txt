@@ -15,12 +15,14 @@ set(HEADERS
 	common.hpp
 	game/game.hpp
 	graphics/shapes.hpp graphics/text.hpp graphics/texture.hpp
+	ui/button_group.hpp
 	utility/log.hpp utility/utility.hpp
 )
 set(SOURCES
 	main.cpp
 	game/game.cpp
 	graphics/shapes.cpp graphics/text.cpp graphics/texture.cpp
+	ui/button_group.cpp
 	utility/log.cpp
 )
 list(TRANSFORM HEADERS PREPEND src/)

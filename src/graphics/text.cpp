@@ -12,6 +12,10 @@ void Text::render(glm::vec2 position) {
 }
 
 void Text::change_colour(SDL_Color newColour) {
+	if (colour.r == newColour.r && colour.g == newColour.g && colour.b == newColour.b && colour.a == newColour.a) {
+		return;
+	}
+	
 	colour = newColour;
 
 	SDL_Surface* surface = TTF_RenderUTF8_Solid_Wrapped(font, message, colour, 0);

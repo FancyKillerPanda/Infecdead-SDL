@@ -1,5 +1,6 @@
 #include <string>
 
+#include "utility/utility.hpp"
 #include "graphics/text.hpp"
 
 Text::Text(SDL_Renderer* renderer, TTF_Font* font, const u8* message, SDL_Color colour) 
@@ -12,7 +13,7 @@ void Text::render(glm::vec2 position) {
 }
 
 void Text::change_colour(SDL_Color newColour) {
-	if (colour.r == newColour.r && colour.g == newColour.g && colour.b == newColour.b && colour.a == newColour.a) {
+	if (colour == newColour) {
 		return;
 	}
 	

@@ -39,3 +39,11 @@ inline glm::vec4 colour_to_vec4(SDL_Color colour) {
 inline SDL_Color vec4_to_colour(glm::vec4 colour) {
 	return SDL_Color { (u8) colour.r, (u8) colour.g, (u8) colour.b, (u8) colour.a };
 }
+
+inline bool operator==(SDL_Color first, SDL_Color second) {
+	return first.r == second.r && first.g == second.g && first.b == second.b && first.a == second.a;
+}
+
+inline bool operator!=(SDL_Color first, SDL_Color second) {
+	return !(first == second);
+}

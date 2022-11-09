@@ -38,6 +38,30 @@ Game::Game() {
 		Text { renderer, primaryFont, "Options", SDL_Color { 0, 0, 0, 255 } },
 		Text { renderer, primaryFont, "About", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
+	mainMenuHomeButtons.set_render_function([](ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
+		constexpr SDL_Color BASE_COLOUR = { 0, 0, 0, 255 };
+		constexpr SDL_Color HOVER_COLOUR = { 255, 255, 0, 255 };
+		constexpr SDL_Color PRESSED_COLOUR = { 192, 192, 0, 255 };
+		
+		SDL_Color colour = BASE_COLOUR;
+		if (buttons.get_pressed_index() != -1) {
+			if (buttons.get_pressed_index() == currentButton) {
+				colour = PRESSED_COLOUR;
+			}
+		} else {
+			if (buttons.get_hover_index() == currentButton) {
+				colour = HOVER_COLOUR;
+			}
+		}
+		
+		glm::vec2 rectangleDimensions = { 240, 64 };
+		glm::vec4 rectangleBox = { position - (rectangleDimensions / 2.0f), rectangleDimensions };
+		s32 cornerRadius = 16;
+
+		shapes::draw_rounded_rectangle(buttons.get_renderer(), rectangleBox, cornerRadius, 8, colour);
+		buttons.texts[currentButton].change_colour(colour);
+		buttons.texts[currentButton].render(position - (buttons.texts[currentButton].get_texture().dimensions / 2.0f));
+	});
 
 	currentState = GameState::MainMenu_Home;
 	currentAnimations.push_back(new FadeAnimation(glm::vec4 { 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT }, SDL_Color { 0, 0, 0, 255 }, SDL_Color { 0, 0, 0, 0 }, 100));

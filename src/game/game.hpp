@@ -29,9 +29,6 @@ private:
 	void render(f64 deltaTime);
 
 private:
-	static constexpr const u32 VIEWPORT_WIDTH = 1920;
-	static constexpr u32 VIEWPORT_HEIGHT = 1080;
-
 	bool running = false;
 
 	SDL_Window* window = nullptr;

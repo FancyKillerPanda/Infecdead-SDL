@@ -16,3 +16,6 @@ using usize = size_t;
 
 using f32 = float;
 using f64 = double;
+
+constexpr const u32 VIEWPORT_WIDTH = 1920;
+constexpr u32 VIEWPORT_HEIGHT = 1080;

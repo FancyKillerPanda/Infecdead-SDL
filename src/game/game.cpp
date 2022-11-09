@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 
 #include "common.hpp"
+#include "animation/fade.hpp"
 #include "game/game.hpp"
 #include "graphics/shapes.hpp"
 #include "graphics/text.hpp"
@@ -39,6 +40,8 @@ Game::Game() {
 	}, {});
 
 	currentState = GameState::MainMenu_Home;
+	currentAnimations.push_back(new FadeAnimation(glm::vec4 { 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT }, SDL_Color { 0, 0, 0, 255 }, SDL_Color { 0, 0, 0, 0 }, 100));
+	
 	running = true;
 	log::info("Game is running.");
 }
@@ -107,6 +110,15 @@ void Game::update() {
 	default:
 		break;
 	};
+
+	for (u32 i = 0; i < currentAnimations.size(); ) {
+		Animation* animation = currentAnimations[i];
+		if (animation->update()) {
+			currentAnimations.erase(currentAnimations.begin() + i);
+		} else {
+			i += 1;
+		}
+	}
 }
 
 void Game::render(f64 deltaTime) {
@@ -121,6 +133,10 @@ void Game::render(f64 deltaTime) {
 	default:
 		break;
 	};
+
+	for (Animation* animation : currentAnimations) {
+		animation->render(renderer, deltaTime);
+	}
 
 	SDL_RenderPresent(renderer);
 }

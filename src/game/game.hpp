@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #include "common.hpp"
+#include "animation/animation.hpp"
 #include "ui/button_group.hpp"
 
 enum class GameState {
@@ -41,6 +42,8 @@ private:
 	GameState nextState = GameState::None;
 
 	TTF_Font* primaryFont = nullptr;
+
+	std::vector<Animation*> currentAnimations {};
 
 	ButtonGroup mainMenuHomeButtons;
 };

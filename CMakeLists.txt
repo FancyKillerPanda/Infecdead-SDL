@@ -15,7 +15,7 @@ set(HEADERS
 	common.hpp
 	animation/animation.hpp animation/fade.hpp animation/logo.hpp
 	game/game.hpp
-	game/state/main_menu_state.hpp game/state/state.hpp
+	game/state/logo_state.hpp game/state/main_menu_state.hpp game/state/state.hpp
 	graphics/shapes.hpp graphics/text.hpp graphics/texture.hpp
 	ui/button_group.hpp
 	utility/log.hpp utility/utility.hpp
@@ -24,7 +24,7 @@ set(SOURCES
 	main.cpp
 	animation/fade.cpp animation/logo.cpp
 	game/game.cpp
-	game/state/main_menu_state.cpp
+	game/state/logo_state.cpp game/state/main_menu_state.cpp
 	graphics/shapes.cpp graphics/text.cpp graphics/texture.cpp
 	ui/button_group.cpp
 	utility/log.cpp

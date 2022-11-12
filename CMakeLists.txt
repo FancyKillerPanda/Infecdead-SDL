@@ -13,7 +13,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 # Files
 set(HEADERS
 	common.hpp
-	animation/animation.hpp animation/fade.hpp
+	animation/animation.hpp animation/fade.hpp animation/logo.hpp
 	game/game.hpp
 	game/state/main_menu_state.hpp game/state/state.hpp
 	graphics/shapes.hpp graphics/text.hpp graphics/texture.hpp
@@ -22,7 +22,7 @@ set(HEADERS
 )
 set(SOURCES
 	main.cpp
-	animation/fade.cpp
+	animation/fade.cpp animation/logo.cpp
 	game/game.cpp
 	game/state/main_menu_state.cpp
 	graphics/shapes.cpp graphics/text.cpp graphics/texture.cpp

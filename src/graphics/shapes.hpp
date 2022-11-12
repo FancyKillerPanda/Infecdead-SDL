@@ -6,6 +6,8 @@
 
 namespace shapes {
 
+	void draw_line(SDL_Renderer* renderer, glm::vec2 pointA, glm::vec2 pointB, s32 width, SDL_Color colour);
+
 	void draw_rectangle(SDL_Renderer* renderer, glm::vec4 box, SDL_Color colour);
 	void fill_rectangle(SDL_Renderer* renderer, glm::vec4 box, SDL_Color colour);
 

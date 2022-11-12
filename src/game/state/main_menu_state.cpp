@@ -1,4 +1,5 @@
 #include "animation/fade.hpp"
+#include "animation/logo.hpp"
 #include "game/game.hpp"
 #include "game/state/main_menu_state.hpp"
 #include "graphics/shapes.hpp"
@@ -13,6 +14,7 @@ MainMenuState::MainMenuState(Game& game)
 	}, {});
 	homeButtons.set_render_function(button_render_function);
 
+	currentAnimations.push_back(new LogoAnimation());
 	currentAnimations.push_back(new FadeAnimation(glm::vec4 { 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT }, SDL_Color { 0, 0, 0, 255 }, SDL_Color { 0, 0, 0, 0 }, 100));
 }
 

@@ -19,6 +19,29 @@
 
 namespace shapes {
 	
+	void draw_line(SDL_Renderer* renderer, glm::vec2 pointA, glm::vec2 pointB, s32 width, SDL_Color colour) {
+		SAVE_RENDER_DATA();
+
+		std::vector<SDL_Vertex> vertices {};
+		std::vector<glm::vec2> positions {
+			{ pointA.x - (width / 2.0f), pointA.y },
+			{ pointB.x - (width / 2.0f), pointB.y },
+			{ pointB.x + (width / 2.0f), pointB.y },
+			
+			{ pointB.x + (width / 2.0f), pointB.y },
+			{ pointA.x + (width / 2.0f), pointA.y },
+			{ pointA.x - (width / 2.0f), pointA.y },
+		};
+
+		for (const glm::vec2& position : positions) {
+			vertices.push_back(SDL_Vertex { SDL_FPoint { position.x, position.y }, colour, SDL_FPoint { 0, 0 }});
+		}
+
+		SDL_RenderGeometry(renderer, nullptr, vertices.data(), vertices.size(), nullptr, 0);
+
+		RESET_RENDER_DATA();
+	}
+	
 	void draw_rectangle(SDL_Renderer* renderer, glm::vec4 box, SDL_Color colour) {
 		SAVE_RENDER_DATA();
 

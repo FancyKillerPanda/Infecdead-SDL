@@ -12,5 +12,8 @@ public:
 	void render(f64 deltaTime) override;
 
 private:
+	static void button_render_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
+
+private:
 	ButtonGroup homeButtons;
 };

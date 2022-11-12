@@ -9,6 +9,7 @@
 #include "common.hpp"
 #include "animation/fade.hpp"
 #include "game/game.hpp"
+#include "game/state/main_menu_state.hpp"
 #include "graphics/shapes.hpp"
 #include "graphics/text.hpp"
 #include "graphics/texture.hpp"
@@ -32,38 +33,7 @@ Game::Game() {
 		return;
 	}
 
-	mainMenuHomeButtons = ButtonGroup(renderer, {
-		Text { renderer, primaryFont, "Play", SDL_Color { 0, 0, 0, 255 } },
-		Text { renderer, primaryFont, "Help", SDL_Color { 0, 0, 0, 255 } },
-		Text { renderer, primaryFont, "Options", SDL_Color { 0, 0, 0, 255 } },
-		Text { renderer, primaryFont, "About", SDL_Color { 0, 0, 0, 255 } },
-	}, {});
-	mainMenuHomeButtons.set_render_function([](ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
-		constexpr SDL_Color BASE_COLOUR = { 0, 0, 0, 255 };
-		constexpr SDL_Color HOVER_COLOUR = { 255, 255, 0, 255 };
-		constexpr SDL_Color PRESSED_COLOUR = { 192, 192, 0, 255 };
-		
-		SDL_Color colour = BASE_COLOUR;
-		if (buttons.get_pressed_index() != -1) {
-			if (buttons.get_pressed_index() == currentButton) {
-				colour = PRESSED_COLOUR;
-			}
-		} else {
-			if (buttons.get_hover_index() == currentButton) {
-				colour = HOVER_COLOUR;
-			}
-		}
-		
-		glm::vec2 rectangleDimensions = { 240, 64 };
-		glm::vec4 rectangleBox = { position - (rectangleDimensions / 2.0f), rectangleDimensions };
-		s32 cornerRadius = 16;
-
-		shapes::draw_rounded_rectangle(buttons.get_renderer(), rectangleBox, cornerRadius, 8, colour);
-		buttons.texts[currentButton].change_colour(colour);
-		buttons.texts[currentButton].render(position - (buttons.texts[currentButton].get_texture().dimensions / 2.0f));
-	});
-
-	currentState = GameState::MainMenu_Home;
+	push_state(new MainMenuState(*this));
 	currentAnimations.push_back(new FadeAnimation(glm::vec4 { 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT }, SDL_Color { 0, 0, 0, 255 }, SDL_Color { 0, 0, 0, 0 }, 100));
 	
 	running = true;
@@ -112,29 +82,13 @@ void Game::handle_input() {
 			break;
 		}
 
-		switch (currentState) {
-		case GameState::MainMenu_Home:
-			mainMenuHomeButtons.handle_input(event);
-			break;
-		
-		default:
-			break;
-		}
+		stateStack.back()->handle_input(event);
 	}
 }
 
 void Game::update() {
-	switch (currentState) {
-	case GameState::None:
-		log::error("Current game state is None. Quitting.");
-		running = false;
-
-		return;
+	stateStack.back()->update();
 	
-	default:
-		break;
-	};
-
 	for (u32 i = 0; i < currentAnimations.size(); ) {
 		Animation* animation = currentAnimations[i];
 		if (animation->update()) {
@@ -149,14 +103,7 @@ void Game::render(f64 deltaTime) {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 
-	switch (currentState) {
-	case GameState::MainMenu_Home:
-		mainMenuHomeButtons.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT * 55 / 100 }, { 0, VIEWPORT_HEIGHT * 1 / 10 });
-		break;
-	
-	default:
-		break;
-	};
+	stateStack.back()->render(deltaTime);
 
 	for (Animation* animation : currentAnimations) {
 		animation->render(renderer, deltaTime);
@@ -210,4 +157,18 @@ bool Game::create_window() {
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	return true;
+}
+
+void Game::push_state(State* state) {
+	stateStack.push_back(state);
+}
+
+void Game::pop_state() {
+	if (stateStack.empty()) {
+		log::error("Attempting to pop an empty state stack.");
+		return;
+	}
+
+	delete stateStack.back();
+	stateStack.pop_back();
 }

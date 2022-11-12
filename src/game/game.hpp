@@ -1,10 +1,13 @@
 #pragma once
 
+#include <vector>
+
 #include <SDL.h>
+#include <SDL_ttf.h>
 
 #include "common.hpp"
 #include "animation/animation.hpp"
-#include "ui/button_group.hpp"
+#include "game/state/state.hpp"
 
 enum class GameState {
 	None,
@@ -21,6 +24,12 @@ public:
 
 	void run();
 
+	void push_state(State* state);
+	void pop_state();
+
+	SDL_Renderer* get_renderer() { return renderer; }
+	TTF_Font* get_primary_font() { return primaryFont; }
+
 private:
 	bool create_window();
 
@@ -34,13 +43,9 @@ private:
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 
-	GameState previousState = GameState::None;
-	GameState currentState = GameState::None;
-	GameState nextState = GameState::None;
+	std::vector<State*> stateStack;
 
 	TTF_Font* primaryFont = nullptr;
 
 	std::vector<Animation*> currentAnimations {};
-
-	ButtonGroup mainMenuHomeButtons;
 };

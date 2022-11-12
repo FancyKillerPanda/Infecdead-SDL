@@ -12,4 +12,7 @@ public:
 
 	bool update() override;
 	void render(SDL_Renderer* renderer, f64 deltaTime) override;
+
+private:
+	u32 currentAlpha = 0;
 };

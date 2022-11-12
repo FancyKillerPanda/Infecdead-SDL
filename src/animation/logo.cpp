@@ -6,7 +6,11 @@ LogoAnimation::LogoAnimation() {
 }
 
 bool LogoAnimation::update() {
-	return false;
+	u32 ALPHA_INCREASE_RATE = 3;
+	currentAlpha += ALPHA_INCREASE_RATE;
+	
+	u32 delay = 100 * ALPHA_INCREASE_RATE;
+	return currentAlpha >= (255 * 3) + delay;
 }
 
 void LogoAnimation::render(SDL_Renderer* renderer, f64 deltaTime) {
@@ -18,21 +22,25 @@ void LogoAnimation::render(SDL_Renderer* renderer, f64 deltaTime) {
 	glm::vec2 centre { (VIEWPORT_WIDTH / 2) - unit3.x, (VIEWPORT_HEIGHT / 2) + unit3.y };
 
 	s32 LINE_WIDTH = 16;
-	SDL_Color WHITE = { 255, 255, 255, 255 };
-	SDL_Color RED = { 255, 0, 0, 255 };
-	SDL_Color LIME = { 108, 255, 0, 255 };
+
+	s32 alpha = currentAlpha;
+	SDL_Color white = { 255, 255, 255, (u8) SDL_clamp(alpha, 0, 255)};
+	alpha -= 255;
+	SDL_Color red = { 255, 0, 0, (u8) SDL_clamp(alpha, 0, 255) };
+	alpha -= 255;
+	SDL_Color lime = { 108, 255, 0, (u8) SDL_clamp(alpha, 0, 255) };
 
 	using namespace shapes;
 
 	// F
-	draw_line(renderer, { centre.x - unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit3.y } , LINE_WIDTH, WHITE);
-	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y } , LINE_WIDTH, WHITE);
-	draw_line(renderer, { centre }, { centre.x + unit3.x, centre.y + unit3.y } , LINE_WIDTH, WHITE);
+	draw_line(renderer, { centre.x - unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit3.y } , LINE_WIDTH, white);
+	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y } , LINE_WIDTH, white);
+	draw_line(renderer, { centre }, { centre.x + unit3.x, centre.y + unit3.y } , LINE_WIDTH, white);
 
 	// K
-	draw_line(renderer, { centre.x + unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit9.y } , LINE_WIDTH, RED);
-	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, RED);
+	draw_line(renderer, { centre.x + unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit9.y } , LINE_WIDTH, red);
+	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, red);
 
 	// P
-	draw_line(renderer, { centre.x + unit3.x, centre.y - unit9.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, LIME);
+	draw_line(renderer, { centre.x + unit3.x, centre.y - unit9.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, lime);
 }

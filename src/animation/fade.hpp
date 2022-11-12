@@ -11,7 +11,7 @@ class FadeAnimation : public Animation {
 public:
 	FadeAnimation(glm::vec4 box, SDL_Color initialColour, SDL_Color targetColour, u32 targetUpdateCount);
 
-	bool update() override;
+	void update() override;
 	void render(SDL_Renderer* renderer, f64 deltaTime) override;
 
 private:

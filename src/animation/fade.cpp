@@ -6,9 +6,9 @@ FadeAnimation::FadeAnimation(glm::vec4 box, SDL_Color initialColour, SDL_Color t
 	: box(box), initialColour(colour_to_vec4(initialColour)), targetColour(colour_to_vec4(targetColour)), currentUpdateCount(1), targetUpdateCount(targetUpdateCount) {
 }
 
-bool FadeAnimation::update() {
+void FadeAnimation::update() {
 	currentUpdateCount += 1;
-	return currentUpdateCount == targetUpdateCount;
+	isFinished = currentUpdateCount == targetUpdateCount;
 }
 
 void FadeAnimation::render(SDL_Renderer* renderer, f64 deltaTime) {

@@ -1,16 +1,12 @@
 #include "animation/logo.hpp"
 #include "graphics/shapes.hpp"
 
-LogoAnimation::LogoAnimation() {
-	
-}
-
-bool LogoAnimation::update() {
+void LogoAnimation::update() {
 	u32 ALPHA_INCREASE_RATE = 3;
 	currentAlpha += ALPHA_INCREASE_RATE;
 	
-	u32 delay = 100 * ALPHA_INCREASE_RATE;
-	return currentAlpha >= (255 * 3) + delay;
+	u32 delay = 75 * ALPHA_INCREASE_RATE;
+	isFinished = currentAlpha >= (255 * 3) + delay;
 }
 
 void LogoAnimation::render(SDL_Renderer* renderer, f64 deltaTime) {

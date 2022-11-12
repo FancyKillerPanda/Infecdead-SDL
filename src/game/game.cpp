@@ -163,3 +163,8 @@ void Game::pop_state() {
 	delete stateStack.back();
 	stateStack.pop_back();
 }
+
+void Game::replace_state(State* state) {
+	pop_state();
+	push_state(state);
+}

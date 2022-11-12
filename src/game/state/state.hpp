@@ -19,9 +19,23 @@ protected:
 	virtual void animate() {
 		for (u32 i = 0; i < currentAnimations.size(); ) {
 			Animation* animation = currentAnimations[i];
-			if (animation->update()) {
-				delete currentAnimations[i];
-				currentAnimations.erase(currentAnimations.begin() + i);
+			if (animation->isFinished) {
+				i += 1;
+				continue;
+			}
+			
+			animation->update();
+			if (animation->isFinished) {
+				for (Animation* next : animation->spawnNext) {
+					currentAnimations.push_back(next);
+				}
+				
+				if (!animation->renderAfterFinished) {
+					delete currentAnimations[i];
+					currentAnimations.erase(currentAnimations.begin() + i);
+				} else {
+					i += 1;
+				}
 			} else {
 				i += 1;
 			}

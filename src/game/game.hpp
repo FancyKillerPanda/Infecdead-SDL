@@ -26,6 +26,7 @@ public:
 
 	void push_state(State* state);
 	void pop_state();
+	void replace_state(State* state);
 
 	SDL_Renderer* get_renderer() { return renderer; }
 	TTF_Font* get_primary_font() { return primaryFont; }

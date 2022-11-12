@@ -34,7 +34,6 @@ Game::Game() {
 	}
 
 	push_state(new MainMenuState(*this));
-	currentAnimations.push_back(new FadeAnimation(glm::vec4 { 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT }, SDL_Color { 0, 0, 0, 255 }, SDL_Color { 0, 0, 0, 0 }, 100));
 	
 	running = true;
 	log::info("Game is running.");
@@ -88,15 +87,6 @@ void Game::handle_input() {
 
 void Game::update() {
 	stateStack.back()->update();
-	
-	for (u32 i = 0; i < currentAnimations.size(); ) {
-		Animation* animation = currentAnimations[i];
-		if (animation->update()) {
-			currentAnimations.erase(currentAnimations.begin() + i);
-		} else {
-			i += 1;
-		}
-	}
 }
 
 void Game::render(f64 deltaTime) {
@@ -105,7 +95,8 @@ void Game::render(f64 deltaTime) {
 
 	stateStack.back()->render(deltaTime);
 
-	for (Animation* animation : currentAnimations) {
+	// TODO(fkp): Should this be done in the state?
+	for (Animation* animation : stateStack.back()->currentAnimations) {
 		animation->render(renderer, deltaTime);
 	}
 

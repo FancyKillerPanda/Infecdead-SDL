@@ -1,3 +1,4 @@
+#include "animation/fade.hpp"
 #include "game/game.hpp"
 #include "game/state/main_menu_state.hpp"
 #include "graphics/shapes.hpp"
@@ -11,6 +12,8 @@ MainMenuState::MainMenuState(Game& game)
 		Text { game.get_renderer(), game.get_primary_font(), "About", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
 	homeButtons.set_render_function(button_render_function);
+
+	currentAnimations.push_back(new FadeAnimation(glm::vec4 { 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT }, SDL_Color { 0, 0, 0, 255 }, SDL_Color { 0, 0, 0, 0 }, 100));
 }
 
 void MainMenuState::handle_input(const SDL_Event& event) {
@@ -18,7 +21,7 @@ void MainMenuState::handle_input(const SDL_Event& event) {
 }
 
 void MainMenuState::update() {
-
+	animate();
 }
 
 void MainMenuState::render(f64 deltaTime) {

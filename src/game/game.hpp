@@ -46,6 +46,4 @@ private:
 	std::vector<State*> stateStack;
 
 	TTF_Font* primaryFont = nullptr;
-
-	std::vector<Animation*> currentAnimations {};
 };

@@ -29,6 +29,7 @@ public:
 
 	SDL_Renderer* get_renderer() { return renderer; }
 
+	void reset();
 	s32 get_hover_index() { return hoverIndex; }
 	s32 get_pressed_index() { return pressedIndex; }
 	

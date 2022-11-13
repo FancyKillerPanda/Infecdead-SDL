@@ -10,9 +10,10 @@
 
 class Text {
 public:
+	Text() = default;
 	Text(SDL_Renderer* renderer, TTF_Font* font, const u8* message, SDL_Color colour);
 
-	void render(glm::vec2 position);
+	void render(glm::vec2 centre);
 	void change_colour(SDL_Color newColour);
 
 	const Texture& get_texture() { return texture; }

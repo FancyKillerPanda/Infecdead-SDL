@@ -8,8 +8,8 @@ Text::Text(SDL_Renderer* renderer, TTF_Font* font, const u8* message, SDL_Color 
 	change_colour(colour);
 }
 
-void Text::render(glm::vec2 position) {
-	texture.render(position);
+void Text::render(glm::vec2 centre) {
+	texture.render(centre - (texture.dimensions / 2.0f));
 }
 
 void Text::change_colour(SDL_Color newColour) {

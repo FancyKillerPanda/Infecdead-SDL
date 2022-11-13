@@ -71,6 +71,11 @@ void ButtonGroup::render(glm::vec2 centre, glm::vec2 spacing) {
 	lastRenderSpacing = spacing;
 }
 
+void ButtonGroup::reset() {
+	hoverIndex = -1;
+	pressedIndex = -1;
+}
+
 void ButtonGroup::default_render_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
 	if (buttons.textures.size() > 0) {
 		log::warn("Attempting to use default button renderer with textures. Define your own!");
@@ -94,7 +99,7 @@ void ButtonGroup::default_render_function(ButtonGroup& buttons, u32 currentButto
 	}
 
 	buttons.texts[currentButton].change_colour(newColour);
-	buttons.texts[currentButton].render(position - (buttons.texts[currentButton].get_texture().dimensions / 2.0f));
+	buttons.texts[currentButton].render(position);
 }
 
 glm::vec2 ButtonGroup::default_get_dimensions_function(ButtonGroup& buttons, u32 currentButton) {

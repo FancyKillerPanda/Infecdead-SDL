@@ -6,6 +6,13 @@
 #include "ui/button_group.hpp"
 
 class MainMenuState : public State {
+	enum class Page {
+		Home,
+		Help,
+		Options,
+		About,
+	};
+	
 public:
 	MainMenuState(Game& game);
 
@@ -18,5 +25,10 @@ private:
 	static glm::vec2 button_get_dimensions_function(ButtonGroup& buttons, u32 currentButton);
 
 private:
+	std::vector<Page> pageStack;
+
+	ButtonGroup backButton;
 	ButtonGroup homeButtons;
+	Text helpText;
+	Text aboutText;
 };

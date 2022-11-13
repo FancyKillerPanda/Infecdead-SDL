@@ -22,15 +22,19 @@ namespace shapes {
 	void draw_line(SDL_Renderer* renderer, glm::vec2 pointA, glm::vec2 pointB, s32 width, SDL_Color colour) {
 		SAVE_RENDER_DATA();
 
+		f32 angle = atan2(pointA.y - pointB.y, pointA.x - pointB.x);
+		f32 sinAngle = sin(angle);
+		f32 cosAngle = cos(angle);
+
 		std::vector<SDL_Vertex> vertices {};
 		std::vector<glm::vec2> positions {
-			{ pointA.x - (width / 2.0f), pointA.y },
-			{ pointB.x - (width / 2.0f), pointB.y },
-			{ pointB.x + (width / 2.0f), pointB.y },
+			{ pointA.x - (sinAngle * (width / 2.0f)), pointA.y + (cosAngle * (width / 2.0f)) },
+			{ pointB.x - (sinAngle * (width / 2.0f)), pointB.y + (cosAngle * (width / 2.0f)) },
+			{ pointB.x + (sinAngle * (width / 2.0f)), pointB.y - (cosAngle * (width / 2.0f)) },
 			
-			{ pointB.x + (width / 2.0f), pointB.y },
-			{ pointA.x + (width / 2.0f), pointA.y },
-			{ pointA.x - (width / 2.0f), pointA.y },
+			{ pointB.x + (sinAngle * (width / 2.0f)), pointB.y - (cosAngle * (width / 2.0f)) },
+			{ pointA.x + (sinAngle * (width / 2.0f)), pointA.y - (cosAngle * (width / 2.0f)) },
+			{ pointA.x - (sinAngle * (width / 2.0f)), pointA.y + (cosAngle * (width / 2.0f)) },
 		};
 
 		for (const glm::vec2& position : positions) {

@@ -31,14 +31,10 @@ s32 ButtonGroup::handle_input(const SDL_Event& event) {
 			SDL_Rect textRect = { 0, 0, 0, 0 };
 			SDL_Rect textureRect = { 0, 0, 0, 0 };
 			
-			if (i < texts.size()) {
-				textRect = to_rect(currentButtonPosition - (texts[i].get_texture().dimensions / 2.0f), texts[i].get_texture().dimensions);
-			}
-			if (i < textures.size()) {
-				textureRect = to_rect(currentButtonPosition - (textures[i].dimensions / 2.0f), textures[i].dimensions);
-			}
-
-			if (SDL_HasIntersection(&mouseRect, &textRect) || SDL_HasIntersection(&mouseRect, &textureRect)) {
+			glm::vec2 dimensions = get_dimensions_function(*this, i);
+			SDL_Rect buttonRect = to_rect(currentButtonPosition - (dimensions / 2.0f), dimensions);
+			
+			if (SDL_HasIntersection(&mouseRect, &buttonRect)) {
 				hoverIndex = i;
 			}
 
@@ -99,4 +95,18 @@ void ButtonGroup::default_render_function(ButtonGroup& buttons, u32 currentButto
 
 	buttons.texts[currentButton].change_colour(newColour);
 	buttons.texts[currentButton].render(position - (buttons.texts[currentButton].get_texture().dimensions / 2.0f));
+}
+
+glm::vec2 ButtonGroup::default_get_dimensions_function(ButtonGroup& buttons, u32 currentButton) {
+	if (buttons.textures.size() > 0) {
+		log::warn("Attempting to use default button get dimensions function with textures. Define your own!");
+		return { 0, 0 };
+	}
+
+	if (currentButton >= buttons.texts.size()) {
+		log::error("Current button is larger than the number of buttons.");
+		return { 0, 0 };
+	}
+	
+	return buttons.texts[currentButton].get_texture().dimensions;
 }

@@ -10,6 +10,7 @@
 
 class ButtonGroup {
 	using RenderFunctionSignature = void (*)(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
+	using GetDimensionsFunctionSignature = glm::vec2 (*)(ButtonGroup& buttons, u32 currentButton);
 	
 public:
 	ButtonGroup() = default;
@@ -21,6 +22,10 @@ public:
 	void set_render_function(RenderFunctionSignature func) {
 		render_function = func;
 	}
+	
+	void set_get_dimensions_function(GetDimensionsFunctionSignature func) {
+		get_dimensions_function = func;
+	}
 
 	SDL_Renderer* get_renderer() { return renderer; }
 
@@ -29,6 +34,7 @@ public:
 	
 private:
 	static void default_render_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
+	static glm::vec2 default_get_dimensions_function(ButtonGroup& buttons, u32 currentButton);
 
 public:
 	std::vector<Text> texts;
@@ -43,4 +49,5 @@ private:
 	s32 pressedIndex = -1;
 
 	RenderFunctionSignature render_function = default_render_function;
+	GetDimensionsFunctionSignature get_dimensions_function = default_get_dimensions_function;
 };

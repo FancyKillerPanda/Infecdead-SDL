@@ -3,6 +3,8 @@
 #include "game/state/main_menu_state.hpp"
 #include "graphics/shapes.hpp"
 
+constexpr glm::vec2 MENU_BUTTON_RECTANGLE_DIMENSIONS = { 240, 64 };
+
 MainMenuState::MainMenuState(Game& game)
 	: State(game) {
 	homeButtons = ButtonGroup(game.get_renderer(), {
@@ -12,6 +14,7 @@ MainMenuState::MainMenuState(Game& game)
 		Text { game.get_renderer(), game.get_primary_font(), "About", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
 	homeButtons.set_render_function(button_render_function);
+	homeButtons.set_get_dimensions_function(button_get_dimensions_function);
 
 	currentAnimations.push_back(new FadeAnimation(glm::vec4 { 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT }, SDL_Color { 0, 0, 0, 255 }, SDL_Color { 0, 0, 0, 0 }, 100));
 }
@@ -44,11 +47,15 @@ void MainMenuState::button_render_function(ButtonGroup& buttons, u32 currentButt
 		}
 	}
 	
-	glm::vec2 rectangleDimensions = { 240, 64 };
+	glm::vec2 rectangleDimensions = MENU_BUTTON_RECTANGLE_DIMENSIONS;
 	glm::vec4 rectangleBox = { position - (rectangleDimensions / 2.0f), rectangleDimensions };
 	s32 cornerRadius = 16;
 
 	shapes::draw_rounded_rectangle(buttons.get_renderer(), rectangleBox, cornerRadius, 8, colour);
 	buttons.texts[currentButton].change_colour(colour);
 	buttons.texts[currentButton].render(position - (buttons.texts[currentButton].get_texture().dimensions / 2.0f));
+}
+
+glm::vec2 MainMenuState::button_get_dimensions_function(ButtonGroup& buttons, u32 currentButton) {
+	return MENU_BUTTON_RECTANGLE_DIMENSIONS;
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "game/state/state.hpp"
 #include "ui/button_group.hpp"
 
@@ -13,6 +15,7 @@ public:
 
 private:
 	static void button_render_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
+	static glm::vec2 button_get_dimensions_function(ButtonGroup& buttons, u32 currentButton);
 
 private:
 	ButtonGroup homeButtons;

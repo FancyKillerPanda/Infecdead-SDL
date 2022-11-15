@@ -10,6 +10,7 @@
 #include "animation/fade.hpp"
 #include "game/game.hpp"
 #include "game/state/logo_state.hpp"
+#include "game/state/main_menu_state.hpp"
 #include "graphics/shapes.hpp"
 #include "graphics/text.hpp"
 #include "graphics/texture.hpp"
@@ -33,7 +34,8 @@ Game::Game() {
 		return;
 	}
 
-	push_state(new LogoState(*this));
+	// push_state(new LogoState(*this));
+	push_state(new MainMenuState(*this));
 	
 	running = true;
 	log::info("Game is running.");

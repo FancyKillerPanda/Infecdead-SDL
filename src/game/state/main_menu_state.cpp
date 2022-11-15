@@ -1,6 +1,7 @@
 #include "animation/fade.hpp"
 #include "game/game.hpp"
 #include "game/state/main_menu_state.hpp"
+#include "game/state/play_state.hpp"
 #include "graphics/shapes.hpp"
 
 constexpr glm::vec2 MENU_BUTTON_RECTANGLE_DIMENSIONS = { 240, 64 };
@@ -106,6 +107,17 @@ void MainMenuState::handle_input(const SDL_Event& event) {
 
 	case Page::ProfileSelection: {
 		s32 result = profileSelectionButtons.handle_input(event);
+		switch (result) {
+		case 0:
+		case 1:
+		case 2:
+			game.replace_state(new PlayState(game));
+			break;
+
+		default:
+			break;
+		}
+
 		break;
 	}
 

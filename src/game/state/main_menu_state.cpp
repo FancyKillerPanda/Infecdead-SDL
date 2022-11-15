@@ -4,6 +4,9 @@
 #include "graphics/shapes.hpp"
 
 constexpr glm::vec2 MENU_BUTTON_RECTANGLE_DIMENSIONS = { 240, 64 };
+constexpr SDL_Color MENU_BASE_COLOUR = { 0, 0, 0, 255 };
+constexpr SDL_Color MENU_HOVER_COLOUR = { 255, 255, 0, 255 };
+constexpr SDL_Color MENU_PRESSED_COLOUR = { 192, 192, 0, 255 };
 
 constexpr const u8* HELP_TEXT =
 R"(Welcome to the town of Infecdead (a fairly apt name for the current situation)!
@@ -38,14 +41,14 @@ MainMenuState::MainMenuState(Game& game)
 		Text { game.get_renderer(), game.get_primary_font(), "Options", SDL_Color { 0, 0, 0, 255 } },
 		Text { game.get_renderer(), game.get_primary_font(), "About", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
-	homeButtons.set_render_function(button_render_function);
-	homeButtons.set_get_dimensions_function(button_get_dimensions_function);
+	homeButtons.set_render_function(render_text_button);
+	homeButtons.set_get_dimensions_function(get_text_button_dimensions);
 
 	backButton = ButtonGroup(game.get_renderer(), {
 		Text { game.get_renderer(), game.get_primary_font(), "<-- Back", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
-	backButton.set_render_function(button_render_function);
-	backButton.set_get_dimensions_function(button_get_dimensions_function);
+	backButton.set_render_function(render_text_button);
+	backButton.set_get_dimensions_function(get_text_button_dimensions);
 
 	helpText = Text { game.get_renderer(), game.get_primary_font(), HELP_TEXT, SDL_Color { 0, 0, 0, 255 } };
 	aboutText = Text { game.get_renderer(), game.get_primary_font(), ABOUT_TEXT, SDL_Color { 0, 0, 0, 255 } };
@@ -123,21 +126,8 @@ void MainMenuState::render(f64 deltaTime) {
 	}
 }
 
-void MainMenuState::button_render_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
-	constexpr SDL_Color BASE_COLOUR = { 0, 0, 0, 255 };
-	constexpr SDL_Color HOVER_COLOUR = { 255, 255, 0, 255 };
-	constexpr SDL_Color PRESSED_COLOUR = { 192, 192, 0, 255 };
-	
-	SDL_Color colour = BASE_COLOUR;
-	if (buttons.get_pressed_index() != -1) {
-		if (buttons.get_pressed_index() == currentButton) {
-			colour = PRESSED_COLOUR;
-		}
-	} else {
-		if (buttons.get_hover_index() == currentButton) {
-			colour = HOVER_COLOUR;
-		}
-	}
+void MainMenuState::render_text_button(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
+	SDL_Color colour = buttons.get_current_colour(currentButton, MENU_BASE_COLOUR, MENU_HOVER_COLOUR, MENU_PRESSED_COLOUR);
 	
 	glm::vec2 rectangleDimensions = MENU_BUTTON_RECTANGLE_DIMENSIONS;
 	glm::vec4 rectangleBox = { position - (rectangleDimensions / 2.0f), rectangleDimensions };
@@ -148,6 +138,6 @@ void MainMenuState::button_render_function(ButtonGroup& buttons, u32 currentButt
 	buttons.texts[currentButton].render(position);
 }
 
-glm::vec2 MainMenuState::button_get_dimensions_function(ButtonGroup& buttons, u32 currentButton) {
+glm::vec2 MainMenuState::get_text_button_dimensions(ButtonGroup& buttons, u32 currentButton) {
 	return MENU_BUTTON_RECTANGLE_DIMENSIONS;
 }

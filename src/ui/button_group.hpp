@@ -19,6 +19,8 @@ public:
 	s32 handle_input(const SDL_Event& event);
 	void render(glm::vec2 centre, glm::vec2 spacing);
 	
+	SDL_Color get_current_colour(s32 currentButton, SDL_Color baseColour, SDL_Color hoverColour, SDL_Color pressedColour);
+	
 	void set_render_function(RenderFunctionSignature func) {
 		render_function = func;
 	}

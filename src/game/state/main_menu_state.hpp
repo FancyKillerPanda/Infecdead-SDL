@@ -8,6 +8,7 @@
 class MainMenuState : public State {
 	enum class Page {
 		Home,
+		ProfileSelection,
 		Help,
 		Options,
 		About,
@@ -21,14 +22,18 @@ public:
 	void render(f64 deltaTime) override;
 
 private:
-	static void button_render_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
-	static glm::vec2 button_get_dimensions_function(ButtonGroup& buttons, u32 currentButton);
+	static void render_text_button(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
+	static glm::vec2 get_text_button_dimensions(ButtonGroup& buttons, u32 currentButton);
+
+	static void render_profile_button(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
+	static glm::vec2 get_profile_button_dimensions(ButtonGroup& buttons, u32 currentButton);
 
 private:
 	std::vector<Page> pageStack;
 
 	ButtonGroup backButton;
 	ButtonGroup homeButtons;
+	ButtonGroup profileSelectionButtons;
 	Text helpText;
 	Text aboutText;
 };

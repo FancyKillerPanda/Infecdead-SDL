@@ -76,6 +76,20 @@ void ButtonGroup::reset() {
 	pressedIndex = -1;
 }
 
+SDL_Color ButtonGroup::get_current_colour(s32 currentButton, SDL_Color baseColour, SDL_Color hoverColour, SDL_Color pressedColour) {
+	if (get_pressed_index() != -1) {
+		if (get_pressed_index() == currentButton) {
+			return pressedColour;
+		}
+	} else {
+		if (get_hover_index() == currentButton) {
+			return hoverColour;
+		}
+	}
+
+	return baseColour;
+}
+
 void ButtonGroup::default_render_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
 	if (buttons.textures.size() > 0) {
 		log::warn("Attempting to use default button renderer with textures. Define your own!");
@@ -87,17 +101,7 @@ void ButtonGroup::default_render_function(ButtonGroup& buttons, u32 currentButto
 		return;
 	}
 	
-	SDL_Color newColour = DEFAULT_BASE_COLOUR;
-	if (buttons.pressedIndex != -1) {
-		if (buttons.pressedIndex == currentButton) {
-			newColour = DEFAULT_PRESSED_COLOUR;
-		}
-	} else {
-		if (buttons.hoverIndex == currentButton) {
-			newColour = DEFAULT_HOVER_COLOUR;
-		}
-	}
-
+	SDL_Color newColour = buttons.get_current_colour(currentButton, DEFAULT_BASE_COLOUR, DEFAULT_HOVER_COLOUR, DEFAULT_PRESSED_COLOUR);
 	buttons.texts[currentButton].change_colour(newColour);
 	buttons.texts[currentButton].render(position);
 }

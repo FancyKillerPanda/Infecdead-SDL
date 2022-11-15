@@ -45,7 +45,7 @@ MainMenuState::MainMenuState(Game& game)
 		Text { game.get_renderer(), game.get_primary_font(), "About", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
 	homeButtons.set_render_function(render_text_button);
-	homeButtons.set_get_dimensions_function(get_text_button_dimensions);
+	homeButtons.set_get_hitboxes_function(get_text_button_hitboxes);
 
 	// Profile selection buttons
 	profileSelectionButtons = ButtonGroup(game.get_renderer(), {
@@ -54,14 +54,14 @@ MainMenuState::MainMenuState(Game& game)
 		Text { game.get_renderer(), game.get_primary_font(), "Profile 3", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
 	profileSelectionButtons.set_render_function(render_profile_button);
-	profileSelectionButtons.set_get_dimensions_function(get_profile_button_dimensions);
+	profileSelectionButtons.set_get_hitboxes_function(get_profile_button_hitboxes);
 
 	// Back button
 	backButton = ButtonGroup(game.get_renderer(), {
 		Text { game.get_renderer(), game.get_primary_font(), "<-- Back", SDL_Color { 0, 0, 0, 255 } },
 	}, {});
 	backButton.set_render_function(render_text_button);
-	backButton.set_get_dimensions_function(get_text_button_dimensions);
+	backButton.set_get_hitboxes_function(get_text_button_hitboxes);
 
 	// Text
 	helpText = Text { game.get_renderer(), game.get_primary_font(), HELP_TEXT, SDL_Color { 0, 0, 0, 255 } };
@@ -163,8 +163,8 @@ void MainMenuState::render_text_button(ButtonGroup& buttons, u32 currentButton, 
 	buttons.texts[currentButton].render(position);
 }
 
-glm::vec2 MainMenuState::get_text_button_dimensions(ButtonGroup& buttons, u32 currentButton) {
-	return MENU_BUTTON_RECTANGLE_DIMENSIONS;
+std::vector<glm::vec4> MainMenuState::get_text_button_hitboxes(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
+	return { glm::vec4 { position - (MENU_BUTTON_RECTANGLE_DIMENSIONS / 2.0f), MENU_BUTTON_RECTANGLE_DIMENSIONS } };
 }
 
 void MainMenuState::render_profile_button(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
@@ -176,7 +176,10 @@ void MainMenuState::render_profile_button(ButtonGroup& buttons, u32 currentButto
 	render_text_button(buttons, currentButton, { position.x, rectangleBox.y + rectangleBox.w + MENU_BUTTON_RECTANGLE_DIMENSIONS.y });
 }
 
-glm::vec2 MainMenuState::get_profile_button_dimensions(ButtonGroup& buttons, u32 currentButton) {
-	// TODO(fkp): Allow clicking on image or text.
-	return PROFILE_BUTTON_IMAGE_SIZE;
+std::vector<glm::vec4> MainMenuState::get_profile_button_hitboxes(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
+	glm::vec4 rectangleBox = { position - (PROFILE_BUTTON_IMAGE_SIZE / 2.0f), PROFILE_BUTTON_IMAGE_SIZE };
+	std::vector<glm::vec4> hitboxes = get_text_button_hitboxes(buttons, currentButton, { position.x, rectangleBox.y + rectangleBox.w + MENU_BUTTON_RECTANGLE_DIMENSIONS.y });
+	hitboxes.emplace_back(rectangleBox);
+	
+	return hitboxes;
 }

@@ -28,14 +28,14 @@ s32 ButtonGroup::handle_input(const SDL_Event& event) {
 		glm::vec2 currentButtonPosition = lastRenderCentre - (glm::vec2 { lastRenderSpacing.x * ((numItems - 1) / 2.0), lastRenderSpacing.y * ((numItems - 1) / 2.0) });
 		
 		for (u32 i = 0; i < numItems; i++) {
-			SDL_Rect textRect = { 0, 0, 0, 0 };
-			SDL_Rect textureRect = { 0, 0, 0, 0 };
-			
-			glm::vec2 dimensions = get_dimensions_function(*this, i);
-			SDL_Rect buttonRect = to_rect(currentButtonPosition - (dimensions / 2.0f), dimensions);
-			
-			if (SDL_HasIntersection(&mouseRect, &buttonRect)) {
-				hoverIndex = i;
+			std::vector<glm::vec4> hitboxes = get_hitboxes_function(*this, i, currentButtonPosition);
+			for (const glm::vec4& hitbox : hitboxes) {
+				SDL_Rect buttonRect = to_rect(hitbox);
+				
+				if (SDL_HasIntersection(&mouseRect, &buttonRect)) {
+					hoverIndex = i;
+					break;
+				}
 			}
 
 			currentButtonPosition += lastRenderSpacing;
@@ -106,16 +106,17 @@ void ButtonGroup::default_render_function(ButtonGroup& buttons, u32 currentButto
 	buttons.texts[currentButton].render(position);
 }
 
-glm::vec2 ButtonGroup::default_get_dimensions_function(ButtonGroup& buttons, u32 currentButton) {
+std::vector<glm::vec4> ButtonGroup::default_get_hitboxes_function(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {
 	if (buttons.textures.size() > 0) {
-		log::warn("Attempting to use default button get dimensions function with textures. Define your own!");
-		return { 0, 0 };
+		log::warn("Attempting to use default button get hitboxes function with textures. Define your own!");
+		return {};
 	}
 
 	if (currentButton >= buttons.texts.size()) {
 		log::error("Current button is larger than the number of buttons.");
-		return { 0, 0 };
+		return {};
 	}
 	
-	return buttons.texts[currentButton].get_texture().dimensions;
+	glm::vec2 dimensions = buttons.texts[currentButton].get_texture().dimensions;
+	return { glm::vec4 { position - (dimensions / 2.0f), dimensions } };
 }

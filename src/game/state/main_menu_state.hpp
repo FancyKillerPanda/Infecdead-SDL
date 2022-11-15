@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <glm/glm.hpp>
 
 #include "game/state/state.hpp"
@@ -23,10 +25,10 @@ public:
 
 private:
 	static void render_text_button(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
-	static glm::vec2 get_text_button_dimensions(ButtonGroup& buttons, u32 currentButton);
+	static std::vector<glm::vec4> get_text_button_hitboxes(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
 
 	static void render_profile_button(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
-	static glm::vec2 get_profile_button_dimensions(ButtonGroup& buttons, u32 currentButton);
+	static std::vector<glm::vec4> get_profile_button_hitboxes(ButtonGroup& buttons, u32 currentButton, glm::vec2 position);
 
 private:
 	std::vector<Page> pageStack;

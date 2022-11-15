@@ -158,6 +158,10 @@ void MainMenuState::render(f64 deltaTime) {
 	if (pageStack.back() != Page::Home) {
 		backButton.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT * 4 / 5 }, { 0, 0 });
 	}
+
+	for (Animation* animation : currentAnimations) {
+		animation->render(game.get_renderer(), deltaTime);
+	}
 }
 
 void MainMenuState::render_text_button(ButtonGroup& buttons, u32 currentButton, glm::vec2 position) {

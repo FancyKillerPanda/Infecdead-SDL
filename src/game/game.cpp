@@ -42,8 +42,8 @@ Game::Game() {
 		return;
 	}
 
-	push_state(new LogoState(*this));
-	// push_state(new MainMenuState(*this));
+	// push_state(new LogoState(*this));
+	push_state(new MainMenuState(*this));
 	
 	running = true;
 	log::info("Game is running.");
@@ -104,11 +104,6 @@ void Game::render(f64 deltaTime) {
 	SDL_RenderClear(renderer);
 
 	stateStack.back()->render(deltaTime);
-
-	// TODO(fkp): Should this be done in the state?
-	for (Animation* animation : stateStack.back()->currentAnimations) {
-		animation->render(renderer, deltaTime);
-	}
 
 	SDL_RenderPresent(renderer);
 }

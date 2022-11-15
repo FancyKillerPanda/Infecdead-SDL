@@ -25,4 +25,8 @@ void LogoState::update() {
 void LogoState::render(f64 deltaTime) {
 	SDL_SetRenderDrawColor(game.get_renderer(), 0, 0, 0, 255);
 	SDL_RenderClear(game.get_renderer());
+
+	for (Animation* animation : currentAnimations) {
+		animation->render(game.get_renderer(), deltaTime);
+	}
 }

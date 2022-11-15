@@ -19,7 +19,7 @@
 
 namespace shapes {
 	
-	void draw_line(SDL_Renderer* renderer, glm::vec2 pointA, glm::vec2 pointB, s32 width, SDL_Color colour) {
+	void draw_line(SDL_Renderer* renderer, glm::vec2 pointA, glm::vec2 pointB, s32 width, SDL_Color colour, bool roundedTips) {
 		SAVE_RENDER_DATA();
 
 		f32 angle = atan2(pointA.y - pointB.y, pointA.x - pointB.x);
@@ -42,6 +42,12 @@ namespace shapes {
 		}
 
 		SDL_RenderGeometry(renderer, nullptr, vertices.data(), vertices.size(), nullptr, 0);
+
+		// Rounded tips
+		if (roundedTips) {
+			fill_circle(renderer, pointA, width / 2, colour, angle - (M_PI / 2.0), angle + (M_PI / 2.0));
+			fill_circle(renderer, pointB, width / 2, colour, angle + (M_PI / 2.0), angle + (M_PI * 3.0 / 2.0));
+		}
 
 		RESET_RENDER_DATA();
 	}

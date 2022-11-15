@@ -42,8 +42,8 @@ Game::Game() {
 		return;
 	}
 
-	// push_state(new LogoState(*this));
-	push_state(new MainMenuState(*this));
+	push_state(new LogoState(*this));
+	// push_state(new MainMenuState(*this));
 	
 	running = true;
 	log::info("Game is running.");
@@ -109,10 +109,6 @@ void Game::render(f64 deltaTime) {
 	for (Animation* animation : stateStack.back()->currentAnimations) {
 		animation->render(renderer, deltaTime);
 	}
-
-	shapes::fill_circle(renderer, { 100, 100 }, 50, { 255, 0, 0, 255 });
-	shapes::fill_circle(renderer, { 200, 100 }, 50, { 255, 0, 0, 255 }, 0, M_PI);
-	shapes::fill_circle(renderer, { 300, 100 }, 50, { 255, 0, 0, 255 }, M_PI / 4.0, M_PI * 7.0 / 4.0);
 
 	SDL_RenderPresent(renderer);
 }

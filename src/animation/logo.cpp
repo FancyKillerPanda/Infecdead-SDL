@@ -29,14 +29,14 @@ void LogoAnimation::render(SDL_Renderer* renderer, f64 deltaTime) {
 	using namespace shapes;
 
 	// F
-	draw_line(renderer, { centre.x - unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit3.y } , LINE_WIDTH, white);
-	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y } , LINE_WIDTH, white);
-	draw_line(renderer, { centre }, { centre.x + unit3.x, centre.y + unit3.y } , LINE_WIDTH, white);
+	draw_line(renderer, { centre.x - unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit3.y } , LINE_WIDTH, white, true);
+	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y } , LINE_WIDTH, white, true);
+	draw_line(renderer, { centre }, { centre.x + unit3.x, centre.y + unit3.y } , LINE_WIDTH, white, true);
 
 	// K
-	draw_line(renderer, { centre.x + unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit9.y } , LINE_WIDTH, red);
-	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, red);
+	draw_line(renderer, { centre.x + unit3.x, centre.y + unit3.y }, { centre.x + unit3.x, centre.y - unit9.y } , LINE_WIDTH, red, true);
+	draw_line(renderer, { centre.x + unit3.x, centre.y - unit3.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, red, true);
 
 	// P
-	draw_line(renderer, { centre.x + unit3.x, centre.y - unit9.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, lime);
+	draw_line(renderer, { centre.x + unit3.x, centre.y - unit9.y }, { centre.x + unit6.x, centre.y - unit6.y } , LINE_WIDTH, lime, true);
 }

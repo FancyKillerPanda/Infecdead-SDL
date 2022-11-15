@@ -94,12 +94,15 @@ namespace shapes {
 		SDL_DestroyTexture(texture);
 	}
 
-	void fill_circle(SDL_Renderer* renderer, glm::vec2 centre, s32 radius, SDL_Color colour) {
+	void fill_circle(SDL_Renderer* renderer, glm::vec2 centre, s32 radius, SDL_Color colour, f64 angleStart, f64 angleEnd) {
 		s32 numTriangles = max(radius / 3, 16);
 		std::vector<SDL_Vertex> vertices {};
 
 		// TODO(fkp): Optimise with an index array.
 		for (s32 i = 0; i < numTriangles; i++) {
+			f32 angle = angleStart + ((angleEnd - angleStart) * ((f64) i / numTriangles));
+			f32 nextAngle = angleStart + ((angleEnd - angleStart) * ((f64) (i + 1) / numTriangles));
+			
 			vertices.push_back(SDL_Vertex {
 				SDL_FPoint { centre.x, centre.y },
 				colour,
@@ -107,13 +110,13 @@ namespace shapes {
 			});
 			
 			vertices.push_back(SDL_Vertex {
-				SDL_FPoint { centre.x + (float) (radius * cos(i * 2.0 * M_PI / numTriangles)), centre.y + (float) (radius * sin(i * 2.0 * M_PI / numTriangles)) },
+				SDL_FPoint { centre.x + (float) (radius * cos(angle)), centre.y + (float) (radius * sin(angle)) },
 				colour,
 				SDL_FPoint { 0, 0 }
 			});
 
 			vertices.push_back(SDL_Vertex {
-				SDL_FPoint { centre.x + (float) (radius * cos((i + 1) * 2.0 * M_PI / numTriangles)), centre.y + (float) (radius * sin((i + 1) * 2.0 * M_PI / numTriangles)) },
+				SDL_FPoint { centre.x + (float) (radius * cos(nextAngle)), centre.y + (float) (radius * sin(nextAngle)) },
 				colour,
 				SDL_FPoint { 0, 0 }
 			});

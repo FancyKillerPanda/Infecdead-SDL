@@ -64,6 +64,7 @@ MainMenuState::MainMenuState(Game& game)
 	backButton.set_get_hitboxes_function(get_text_button_hitboxes);
 
 	// Text
+	titleText = Text { game.get_renderer(), game.get_title_font(), "INFECDEAD", SDL_Color { 0, 0, 0, 255 } };
 	helpText = Text { game.get_renderer(), game.get_primary_font(), HELP_TEXT, SDL_Color { 0, 0, 0, 255 } };
 	aboutText = Text { game.get_renderer(), game.get_primary_font(), ABOUT_TEXT, SDL_Color { 0, 0, 0, 255 } };
 
@@ -127,18 +128,26 @@ void MainMenuState::update() {
 void MainMenuState::render(f64 deltaTime) {
 	switch (pageStack.back()) {
 	case Page::Home:
+		titleText.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 4 });
 		homeButtons.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT * 55 / 100 }, { 0, VIEWPORT_HEIGHT * 1 / 10 });
 		break;
 
 	case Page::ProfileSelection:
+		titleText.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 4 });
 		profileSelectionButtons.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT * 50 / 100 }, { VIEWPORT_WIDTH * 2 / 10, 0 });
 		break;
 
 	case Page::Help:
+		titleText.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 4 });
 		helpText.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2 });
 		break;
 	
+	case Page::Options:
+		titleText.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 4 });
+		break;
+	
 	case Page::About:
+		titleText.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 4 });
 		aboutText.render({ VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2 });
 		break;
 	

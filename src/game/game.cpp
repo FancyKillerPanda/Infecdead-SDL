@@ -27,10 +27,18 @@ Game::Game() {
 	create_window();
 
 	constexpr const u8* FONT_PATH = "res/fonts/Pixeltype.ttf";
-	constexpr const u32 FONT_SIZE = 48;
-	primaryFont = TTF_OpenFont(FONT_PATH, FONT_SIZE);
+	constexpr const u32 PRIMARY_FONT_SIZE = 48;
+	constexpr const u32 TITLE_FONT_SIZE = 144;
+
+	titleFont = TTF_OpenFont(FONT_PATH, TITLE_FONT_SIZE);
+	if (!titleFont) {
+		log::error("Failed to open font '%s' at size %u.\n%s", FONT_PATH, TITLE_FONT_SIZE, SDL_GetError());
+		return;
+	}
+
+	primaryFont = TTF_OpenFont(FONT_PATH, PRIMARY_FONT_SIZE);
 	if (!primaryFont) {
-		log::error("Failed to open font '%s' at size %u.\n%s", FONT_PATH, FONT_SIZE, SDL_GetError());
+		log::error("Failed to open font '%s' at size %u.\n%s", FONT_PATH, PRIMARY_FONT_SIZE, SDL_GetError());
 		return;
 	}
 

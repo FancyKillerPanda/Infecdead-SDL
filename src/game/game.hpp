@@ -29,6 +29,7 @@ public:
 	void replace_state(State* state);
 
 	SDL_Renderer* get_renderer() { return renderer; }
+	TTF_Font* get_title_font() { return titleFont; }
 	TTF_Font* get_primary_font() { return primaryFont; }
 
 private:
@@ -46,5 +47,6 @@ private:
 
 	std::vector<State*> stateStack;
 
+	TTF_Font* titleFont = nullptr;
 	TTF_Font* primaryFont = nullptr;
 };

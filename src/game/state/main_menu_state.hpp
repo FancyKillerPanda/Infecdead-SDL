@@ -36,6 +36,8 @@ private:
 	ButtonGroup backButton;
 	ButtonGroup homeButtons;
 	ButtonGroup profileSelectionButtons;
+
+	Text titleText;
 	Text helpText;
 	Text aboutText;
 };

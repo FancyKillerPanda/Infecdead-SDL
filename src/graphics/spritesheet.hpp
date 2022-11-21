@@ -5,12 +5,16 @@
 #include <SDL.h>
 
 #include "common.hpp"
+#include "animation/spritesheet_animation.hpp"
 #include "graphics/texture.hpp"
 
 class Spritesheet {
+	friend class SpritesheetAnimation;
+	
 public:
-	Spritesheet(Texture texture, glm::vec2 subrectDimensions, u32 numberOfSubrects, u32 subrectsPerRow);
+	Spritesheet(Texture texture, glm::vec2 subrectDimensions, u32 numberOfSubrects, u32 subrectsPerRow, SpritesheetAnimation* animation = nullptr);
 
+	void update();
 	void render(glm::vec2 position, glm::vec2 dimensions, f64 rotation = 0.0, SDL_RendererFlip flip = SDL_FLIP_NONE);
 
 	void set_current_subrect_index(u32 index);
@@ -24,4 +28,6 @@ private:
 	u32 subrectsPerRow = 0;
 
 	u32 currentSubrectIndex = 0;
+
+	SpritesheetAnimation* animation = nullptr;
 };

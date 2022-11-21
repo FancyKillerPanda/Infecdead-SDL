@@ -19,7 +19,7 @@ set(HEADERS
 	game/game.hpp
 	game/state/logo_state.hpp game/state/main_menu_state.hpp game/state/play_state.hpp game/state/state.hpp
 
-	graphics/shapes.hpp graphics/text.hpp graphics/texture.hpp
+	graphics/shapes.hpp graphics/spritesheet.hpp graphics/text.hpp graphics/texture.hpp
 
 	ui/button_group.hpp
 
@@ -33,7 +33,7 @@ set(SOURCES
 	game/game.cpp
 	game/state/logo_state.cpp game/state/main_menu_state.cpp game/state/play_state.cpp
 
-	graphics/shapes.cpp graphics/text.cpp graphics/texture.cpp
+	graphics/shapes.cpp graphics/spritesheet.cpp graphics/text.cpp graphics/texture.cpp
 
 	ui/button_group.cpp
 	

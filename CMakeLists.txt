@@ -48,6 +48,8 @@ list(TRANSFORM SOURCES PREPEND src/)
 set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(dep/glm)
 
+add_subdirectory(dep/json)
+
 set(BUILD_SHARED_LIBS OFF)
 set(SDL_TEST OFF)
 add_subdirectory(dep/SDL)

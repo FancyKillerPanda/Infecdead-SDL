@@ -32,7 +32,6 @@ void Player::update() {
 	handle_input();
 
 	velocity += acceleration;
-	printf("(%f, %f), (%f, %f), %f\n", acceleration.x, acceleration.y, velocity.x, velocity.y, get_friction());
 	velocity *= get_friction();
 
 	if (abs(velocity.x) < 0.0015) velocity.x = 0;

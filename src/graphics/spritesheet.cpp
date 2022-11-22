@@ -3,8 +3,8 @@
 #include "utility/log.hpp"
 #include "utility/utility.hpp"
 
-Spritesheet::Spritesheet(Texture texture, glm::vec2 subrectDimensions, u32 numberOfSubrects, u32 subrectsPerRow, SpritesheetAnimation* animation)
-	: texture(texture), subrectDimensions(subrectDimensions), numberOfSubrects(numberOfSubrects), subrectsPerRow(subrectsPerRow), animation(animation) {
+Spritesheet::Spritesheet(Texture texture, glm::vec2 subrectDimensions, u32 numberOfSubrects, u32 subrectsPerRow)
+	: texture(texture), subrectDimensions(subrectDimensions), numberOfSubrects(numberOfSubrects), subrectsPerRow(subrectsPerRow) {
 	log::info("Initialised spritesheet with %u subrects (%u per row).", numberOfSubrects, subrectsPerRow);
 }
 

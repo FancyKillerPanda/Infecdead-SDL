@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/entity/player.hpp"
 #include "game/state/state.hpp"
 
 class PlayState : public State {
@@ -9,4 +10,7 @@ public:
 	void handle_input(const SDL_Event& event) override;
 	void update() override;
 	void render(f64 deltaTime) override;
+
+private:
+	Player player;
 };

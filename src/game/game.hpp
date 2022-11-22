@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 

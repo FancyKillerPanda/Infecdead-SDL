@@ -20,8 +20,11 @@ void Character::update_position() {
 void Character::update_texture() {
 	currentSpritesheet->update();
 	
-	u32 column = currentSpritesheet->get_current_subrect_index() % currentSpritesheet->get_subrects_per_row();
 	u32 row = (u32) (fmod(rotation + 22.5, 360.0) / 45.0);
+	u32 column = currentSpritesheet->get_current_subrect_index() % currentSpritesheet->get_subrects_per_row();
+	if (velocity == glm::vec2 { 0, 0 }) {
+		column = 0;
+	}
 
 	currentSpritesheet->set_current_subrect_index((row * currentSpritesheet->get_subrects_per_row()) + column);
 }

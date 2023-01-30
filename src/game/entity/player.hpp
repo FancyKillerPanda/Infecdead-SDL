@@ -12,7 +12,7 @@ public:
 	void update() override;
 	// void render(f64 deltaTime) override;
 
-	f64 get_walk_acceleration() { return 0.32; }
-	f64 get_friction() { return 0.009; }
-	f64 get_rotation_speed() { return 7; }
+	f64 get_walk_acceleration() { return 0.012; }
+	f64 get_friction() { return 0.9; }
+	f64 get_rotation_speed() { return 4.5; }
 };

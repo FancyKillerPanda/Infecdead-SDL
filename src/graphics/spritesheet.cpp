@@ -34,5 +34,5 @@ SDL_Rect Spritesheet::get_current_subrect() {
 	u32 row = currentSubrectIndex / subrectsPerRow;
 	u32 col = currentSubrectIndex % subrectsPerRow;
 
-	return to_rect(glm::vec2 { row, col } * subrectDimensions, subrectDimensions);
+	return to_rect(glm::vec2 { col, row } * subrectDimensions, subrectDimensions);
 }

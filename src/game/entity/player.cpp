@@ -17,10 +17,10 @@ void Player::handle_input() {
 	if (keyboard[SDL_SCANCODE_S]) {
 		acceleration = rotationVector * (f32) (-get_walk_acceleration() * 0.5);
 	}
-	if (keyboard[SDL_SCANCODE_W]) {
+	if (keyboard[SDL_SCANCODE_A]) {
 		rotation += get_rotation_speed();
 	}
-	if (keyboard[SDL_SCANCODE_W]) {
+	if (keyboard[SDL_SCANCODE_D]) {
 		rotation += 360.0;
 		rotation -= get_rotation_speed();
 	}
@@ -42,5 +42,5 @@ void Player::update() {
 }
 
 // void Player::render(f64 deltaTime) {
-
+//
 // }

@@ -2,6 +2,8 @@
 
 #include "game/entity/player.hpp"
 #include "game/state/state.hpp"
+#include "map/tileset.hpp"
+#include "map/tilemap.hpp"
 
 class PlayState : public State {
 public:
@@ -13,4 +15,7 @@ public:
 
 private:
 	Player player;
+
+	Tileset tileset;
+	Tilemap worldMap;
 };

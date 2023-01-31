@@ -20,6 +20,8 @@ public:
 	virtual void update() = 0;
 	virtual void render(f64 deltaTime);
 
+	const glm::vec2& get_world_position() const { return worldPosition; }
+
 protected:
 	void update_position();
 	void update_texture();

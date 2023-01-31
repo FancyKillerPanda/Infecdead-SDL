@@ -13,8 +13,8 @@ public:
 	Tileset(const Tileset&) = delete;
 	Tileset& operator=(const Tileset&) = delete;
 
-	const Texture& get_texture() { return texture; }
-	SDL_Rect get_tile_rect(u32 index);
+	const Texture& get_texture() const { return texture; }
+	SDL_Rect get_tile_rect(u32 index) const;
 
 private:
 	Texture texture;

@@ -2,7 +2,8 @@
 #include "game/state/play_state.hpp"
 
 PlayState::PlayState(Game& game) 
-	: State(game), player(game, { 10, 10 }) {
+	: State(game), player(game, { 10, 10 }),
+	  tileset(game.get_renderer(), "res/maps/tileset.json"), worldMap(tileset, "res/maps/world.json") {
 }
 
 void PlayState::handle_input(const SDL_Event& event) {
@@ -19,5 +20,7 @@ void PlayState::render(f64 deltaTime) {
 		animation->render(game.get_renderer(), deltaTime);
 	}
 
+	worldMap.render_first_pass(player.get_world_position() / worldMap.get_tile_dimensions(), 2.0);
 	player.render(deltaTime);
+	worldMap.render_second_pass(player.get_world_position() / worldMap.get_tile_dimensions(), 2.0);
 }

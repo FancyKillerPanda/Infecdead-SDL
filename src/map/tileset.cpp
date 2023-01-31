@@ -48,7 +48,7 @@ Tileset::Tileset(SDL_Renderer* renderer, const u8* filepath) {
 	}
 }
 
-SDL_Rect Tileset::get_tile_rect(u32 index) {
+SDL_Rect Tileset::get_tile_rect(u32 index) const {
 	if (index >= tileCount) {
 		log::warn("Attempting to get invalid tileset tile rect.");
 		return { 0, 0, 0, 0 };

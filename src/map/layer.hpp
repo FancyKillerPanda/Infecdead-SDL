@@ -17,8 +17,10 @@ enum class TilemapLayerType {
 class TilemapLayer {
 public:
 	TilemapLayer(json layer);
-	TilemapLayer(const TilemapLayer&) = delete;
-	TilemapLayer& operator=(const TilemapLayer&) = delete;
+
+	const std::vector<u8>& get_data() const { return data; }
+	const glm::vec2& get_dimensions() const { return layerDimensions; };
+	s32 get_z_index() const { return z; }
 
 public:
 	TilemapLayerType type;

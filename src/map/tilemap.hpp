@@ -16,6 +16,11 @@ public:
 	Tilemap(const Tilemap&) = delete;
 	Tilemap& operator=(const Tilemap&) = delete;
 
+	void render_first_pass(const glm::vec2& playerPosition, f32 scale); // Renders everything below the player.
+	void render_second_pass(const glm::vec2& playerPosition, f32 scale); // Renders everything above the player.
+
+	const glm::vec2& get_tile_dimensions() const { return tileDimensions; }
+
 private:
 	const Tileset& tileset;
 	std::vector<TilemapLayer> tileLayers;

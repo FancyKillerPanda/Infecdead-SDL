@@ -22,7 +22,7 @@ set(HEADERS
 
 	graphics/shapes.hpp graphics/spritesheet.hpp graphics/text.hpp graphics/texture.hpp
 
-	map/tileset.hpp
+	map/layer.hpp map/tilemap.hpp map/tileset.hpp
 	
 	ui/button_group.hpp
 
@@ -39,7 +39,7 @@ set(SOURCES
 
 	graphics/shapes.cpp graphics/spritesheet.cpp graphics/text.cpp graphics/texture.cpp
 
-	map/tileset.cpp
+	map/layer.cpp map/tilemap.cpp map/tileset.cpp
 	
 	ui/button_group.cpp
 	

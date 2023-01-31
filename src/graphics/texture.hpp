@@ -20,8 +20,8 @@ public:
 	Texture& operator=(const Texture& other);
 	Texture& operator=(Texture&& other);
 
-	SDL_Texture* get() { return texture; }
-	SDL_Renderer* get_renderer() { return renderer; }
+	SDL_Texture* get() const { return texture; }
+	SDL_Renderer* get_renderer() const { return renderer; }
 
 	void render(glm::vec2 position);
 

@@ -22,6 +22,8 @@ set(HEADERS
 
 	graphics/shapes.hpp graphics/spritesheet.hpp graphics/text.hpp graphics/texture.hpp
 
+	map/tileset.hpp
+	
 	ui/button_group.hpp
 
 	utility/log.hpp utility/utility.hpp
@@ -37,6 +39,8 @@ set(SOURCES
 
 	graphics/shapes.cpp graphics/spritesheet.cpp graphics/text.cpp graphics/texture.cpp
 
+	map/tileset.cpp
+	
 	ui/button_group.cpp
 	
 	utility/log.cpp
@@ -67,8 +71,9 @@ add_subdirectory(dep/SDL_ttf)
 # The executable
 add_executable(Infecdead ${HEADERS} ${SOURCES})
 target_include_directories(Infecdead PUBLIC ${CMAKE_SOURCE_DIR}/src)
-target_link_libraries(Infecdead SDL2::SDL2main SDL2::SDL2-static SDL2_image::SDL2_image-static SDL2_ttf::SDL2_ttf-static)
 target_link_libraries(Infecdead glm)
+target_link_libraries(Infecdead nlohmann_json)
+target_link_libraries(Infecdead SDL2::SDL2main SDL2::SDL2-static SDL2_image::SDL2_image-static SDL2_ttf::SDL2_ttf-static)
 
 # Copies resource files to the output directory
 add_custom_command(TARGET Infecdead POST_BUILD COMMAND

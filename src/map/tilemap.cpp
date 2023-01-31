@@ -23,11 +23,8 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	json data = json::parse(buffer);
 	delete[] buffer;
 
-	width = data["width"];
-	height = data["height"];
-	
-	tileWidth = data["tilewidth"];
-	tileHeight = data["tileheight"];
+	mapDimensions = { data["width"], data["height"] };
+	tileDimensions = { data["tilewidth"], data["tileheight"] };
 
 	for (json layerData : data["layers"]) {
 		TilemapLayer layer { layerData };

@@ -33,18 +33,15 @@ Tileset::Tileset(SDL_Renderer* renderer, const u8* filepath) {
 	//            is destroyed, but this doesn't seem like a great way to do it.
 	std::string* imageFilepath = new std::string("res/maps/");
 	*imageFilepath += std::string(data["image"]);
-	
+
 	texture = Texture { renderer, imageFilepath->c_str() };
 	if (texture.dimensions.x != data["imagewidth"] || texture.dimensions.y != data["imageheight"]) {
 		log::warn("Tileset texture dimensions do not match dimensions specified in file.");
 	}
 
 	tileCount = data["tilecount"];
-	numCols = data["columns"];
-	numRows = tileCount / numCols;
-
-	tileWidth = data["tilewidth"];
-	tileHeight = data["tileheight"];
+	dimensions = glm::vec2 { data["columns"], tileCount / (u32) data["columns"] };
+	tileDimensions = glm::vec2 { data["tilewidth"], data["tileheight"] };
 
 	if (data["margin"] != 0 || data["spacing"] != 0) {
 		log::warn("Tileset currently only supports a margin and spacing of 0.");
@@ -57,8 +54,11 @@ SDL_Rect Tileset::get_tile_rect(u32 index) {
 		return { 0, 0, 0, 0 };
 	}
 
-	u32 row = index / numCols;
-	u32 col = index % numCols;
+	u32 row = index / ((u32) dimensions.x);
+	u32 col = index % ((u32) dimensions.x);
 
-	return { (s32) (col * tileWidth), (s32) (row * tileHeight), (s32) tileWidth, (s32) tileHeight };
+	return { (s32) (col * tileDimensions.x),
+			 (s32) (row * tileDimensions.y),
+			 (s32) tileDimensions.x,
+			 (s32) tileDimensions.y };
 }

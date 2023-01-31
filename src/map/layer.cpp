@@ -5,8 +5,7 @@ TilemapLayer::TilemapLayer(json layer) {
 		type = TilemapLayerType::TileLayer;
 
 		data = layer["data"];
-		layerWidth = layer["width"];
-		layerHeight = layer["height"];
+		layerDimensions = { layer["width"], layer["height"] };
 
 		for (json property : layer["properties"]) {
 			if (property["name"] == "z") {

@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <glm/glm.hpp>
+
 #include <nlohmann/json.hpp>
 
 #include "common.hpp"
@@ -23,8 +25,7 @@ public:
 
 private:
 	std::vector<u8> data;
-	u32 layerWidth = 0;
-	u32 layerHeight = 0;
+	glm::vec2 layerDimensions; // Number of columns and rows.
 
 	s32 z = 0;
 };

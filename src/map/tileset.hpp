@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include <SDL.h>
 
 #include "common.hpp"
@@ -16,9 +18,6 @@ private:
 	Texture texture;
 
 	u32 tileCount = 0;
-	u32 numRows = 0;
-	u32 numCols = 0;
-
-	u32 tileWidth = 0;
-	u32 tileHeight = 0;
+	glm::vec2 dimensions; // Number of columns and rows.
+	glm::vec2 tileDimensions; // Width and height of each tile.
 };

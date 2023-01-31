@@ -13,6 +13,8 @@
 class Tilemap {
 public:
 	Tilemap(const Tileset& tileset, const u8* filepath);
+	Tilemap(const Tilemap&) = delete;
+	Tilemap& operator=(const Tilemap&) = delete;
 
 private:
 	const Tileset& tileset;

@@ -10,6 +10,8 @@
 class Tileset {
 public:
 	Tileset(SDL_Renderer* renderer, const u8* filepath);
+	Tileset(const Tileset&) = delete;
+	Tileset& operator=(const Tileset&) = delete;
 
 	const Texture& get_texture() { return texture; }
 	SDL_Rect get_tile_rect(u32 index);

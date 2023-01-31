@@ -535,6 +535,12 @@
          "id":5,
          "name":"Building Walls",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"z",
+                 "type":"int",
+                 "value":0
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":64,
@@ -547,6 +553,12 @@
          "id":6,
          "name":"Building Furniture",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"z",
+                 "type":"int",
+                 "value":0
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":64,
@@ -559,6 +571,12 @@
          "id":7,
          "name":"Building Roofs",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"z",
+                 "type":"int",
+                 "value":1
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":64,

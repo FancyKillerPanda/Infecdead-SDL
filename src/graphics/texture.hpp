@@ -13,6 +13,7 @@ public:
 	Texture() = default;
 	Texture(SDL_Renderer* renderer, const u8* filepath);
 	Texture(SDL_Renderer* renderer, SDL_Surface* surface);
+	Texture(SDL_Renderer* renderer, SDL_Texture* texture);
 	~Texture();
 
 	Texture(const Texture& other);

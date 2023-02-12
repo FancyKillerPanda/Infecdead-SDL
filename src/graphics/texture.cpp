@@ -38,6 +38,19 @@ Texture::Texture(SDL_Renderer* renderer, SDL_Surface* surface)
 	referencesCount[texture] += 1;
 }
 
+Texture::Texture(SDL_Renderer* renderer, SDL_Texture* texture) {
+	if (!texture) {
+		log::warn("Passed nullptr texture to Texture constructor.");
+
+		if (!init_missing_texture()) {
+			return;
+		}
+	}
+
+	init_dimensions();
+	referencesCount[texture] += 1;
+}
+
 Texture::~Texture() {
 	if (!texture) {
 		return;

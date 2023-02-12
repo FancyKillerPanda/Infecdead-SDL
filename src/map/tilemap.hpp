@@ -27,4 +27,6 @@ private:
 
 	glm::vec2 mapDimensions; // Number of columns and rows.
 	glm::vec2 tileDimensions; // Internal size of each tile. Tilemap can be rendered at a different size (scaled).
+
+	
 };

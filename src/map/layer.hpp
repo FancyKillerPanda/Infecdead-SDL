@@ -7,6 +7,8 @@
 #include <nlohmann/json.hpp>
 
 #include "common.hpp"
+#include "graphics/texture.hpp"
+#include "map/tileset.hpp"
 
 using json = nlohmann::json;
 
@@ -18,6 +20,8 @@ class TilemapLayer {
 public:
 	TilemapLayer(json layer);
 
+	void render_to_texture(Texture& texture, const Tileset& tileset, glm::vec2 tileDimensions) const;
+	
 	const std::vector<u8>& get_data() const { return data; }
 	const glm::vec2& get_dimensions() const { return layerDimensions; };
 	s32 get_z_index() const { return z; }

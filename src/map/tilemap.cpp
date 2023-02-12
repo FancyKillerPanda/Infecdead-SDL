@@ -1,5 +1,6 @@
 #include <algorithm>
 
+#include "SDL_render.h"
 #include "map/tilemap.hpp"
 #include "utility/log.hpp"
 #include "utility/utility.hpp"
@@ -46,6 +47,34 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	std::stable_sort(tileLayers.begin(), tileLayers.end(), [](const TilemapLayer& left, const TilemapLayer& right) {
 		return left.get_z_index() < right.get_z_index();
 	});
+
+	// Creates textures for layers which can be rendered whole.
+	SDL_Renderer* renderer = tileset.get_texture().get_renderer();
+	glm::vec2 textureDimensions = mapDimensions * tileDimensions;
+	
+	SDL_Texture* firstTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+												  (s32) textureDimensions.x, (s32) textureDimensions.y);
+	if (!firstTexture) {
+		log::error("Failed to create first tilemap renderable texture.\n%s", SDL_GetError());
+	}
+
+	SDL_Texture* secondTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+												   (s32) textureDimensions.x, (s32) textureDimensions.y);
+	if (!secondTexture) {
+		log::error("Failed to create second tilemap renderable texture.\n%s", SDL_GetError());
+	}
+
+	firstPassTexture = Texture { renderer, firstTexture };
+	secondPassTexture = Texture { renderer, secondTexture };
+
+	// Renders applicable layers to the textures.
+	for (const TilemapLayer& layer : tileLayers) {
+		if (layer.get_z_index() < 0) {
+			layer.render_to_texture(firstPassTexture, tileset, tileDimensions);
+		} else if (layer.get_z_index() > 0) {
+			layer.render_to_texture(secondPassTexture, tileset, tileDimensions);
+		}
+	}
 }
 
 void Tilemap::render_first_pass(const glm::vec2& playerPosition, f32 scale) {

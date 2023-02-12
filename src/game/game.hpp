@@ -10,6 +10,7 @@
 #include "common.hpp"
 #include "animation/animation.hpp"
 #include "game/state/state.hpp"
+#include "graphics/text.hpp"
 
 enum class GameState {
 	None,
@@ -51,4 +52,7 @@ private:
 
 	TTF_Font* titleFont = nullptr;
 	TTF_Font* primaryFont = nullptr;
+
+	u8 fpsTextBuffer[32];
+	Text fpsText {};
 };

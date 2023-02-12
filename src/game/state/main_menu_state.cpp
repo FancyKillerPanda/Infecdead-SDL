@@ -184,7 +184,7 @@ void MainMenuState::render_text_button(ButtonGroup& buttons, u32 currentButton, 
 	s32 cornerRadius = 16;
 
 	shapes::draw_rounded_rectangle(buttons.get_renderer(), rectangleBox, cornerRadius, 8, colour);
-	buttons.texts[currentButton].change_colour(colour);
+	buttons.texts[currentButton].set_colour(colour);
 	buttons.texts[currentButton].render(position);
 }
 

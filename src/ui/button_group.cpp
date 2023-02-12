@@ -102,7 +102,7 @@ void ButtonGroup::default_render_function(ButtonGroup& buttons, u32 currentButto
 	}
 	
 	SDL_Color newColour = buttons.get_current_colour(currentButton, DEFAULT_BASE_COLOUR, DEFAULT_HOVER_COLOUR, DEFAULT_PRESSED_COLOUR);
-	buttons.texts[currentButton].change_colour(newColour);
+	buttons.texts[currentButton].set_colour(newColour);
 	buttons.texts[currentButton].render(position);
 }
 

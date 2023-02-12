@@ -45,6 +45,8 @@ Game::Game() {
 	// push_state(new LogoState(*this));
 	push_state(new PlayState(*this));
 	
+	fpsText = Text { renderer, primaryFont, " ", SDL_Color { 255, 255, 255, 255 }};
+	
 	running = true;
 	log::info("Game is running.");
 }
@@ -63,6 +65,11 @@ void Game::run() {
 	std::chrono::high_resolution_clock::time_point previousTime = std::chrono::high_resolution_clock::now();
 	f64 lagMs = 0.0;
 	
+	// NOTE(fkp): Timer starts above 1000 ms to ensure text gets
+	// created on the first frame.
+	u32 fpsCounter = 0; // Counts number of frames.
+	f64 fpsTimer = 1001.0; // Counts up to one second (1000 ms).
+	
 	while (running) {
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		f64 elapsedMs = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - previousTime).count() / 1000.0;
@@ -74,6 +81,16 @@ void Game::run() {
 		while (lagMs >= MS_PER_UPDATE) {
 			update();
 			lagMs -= MS_PER_UPDATE;
+		}
+
+		fpsCounter += 1;
+		fpsTimer += elapsedMs;
+		if (fpsTimer >= 1000.0) {
+			snprintf(fpsTextBuffer, 32, "%.2f ms (%u FPS)", fpsTimer / fpsCounter, fpsCounter);
+			fpsText.set_message(fpsTextBuffer);
+
+			fpsCounter = 0;
+			fpsTimer = 0.0;
 		}
 
 		render(lagMs / MS_PER_UPDATE);
@@ -104,6 +121,9 @@ void Game::render(f64 deltaTime) {
 	SDL_RenderClear(renderer);
 
 	stateStack.back()->render(deltaTime);
+
+	glm::vec2 fpsTextDimensions = fpsText.get_texture().dimensions;
+	fpsText.render(glm::vec2 { VIEWPORT_WIDTH - 16, 32 } - (fpsTextDimensions / 2.0f));
 
 	SDL_RenderPresent(renderer);
 }

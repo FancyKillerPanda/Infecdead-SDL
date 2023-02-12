@@ -22,6 +22,7 @@ TilemapLayer::TilemapLayer(json layer) {
 
 void TilemapLayer::render_to_texture(Texture& texture, const Tileset& tileset, glm::vec2 tileDimensions) const {
 	SDL_SetRenderTarget(texture.get_renderer(), texture.get());
+	// SDL_SetRenderDrawBlendMode(texture.get_renderer(), SDL_BLENDMODE_BLEND);
 	
 	glm::vec2 currentCoordinates = { 0, 0 };
 	const Texture& tilesetTexture = tileset.get_texture();

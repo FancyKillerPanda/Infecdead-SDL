@@ -64,6 +64,9 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 		log::error("Failed to create second tilemap renderable texture.\n%s", SDL_GetError());
 	}
 
+	SDL_SetTextureBlendMode(firstTexture, SDL_BLENDMODE_BLEND);
+	SDL_SetTextureBlendMode(secondTexture, SDL_BLENDMODE_BLEND);
+	
 	firstPassTexture = Texture { renderer, firstTexture };
 	secondPassTexture = Texture { renderer, secondTexture };
 
@@ -79,31 +82,8 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 
 void Tilemap::render_first_pass(const glm::vec2& playerPosition, f32 scale) {
 	// Renders all the layers with z < 0.
-	// TODO(fkp): These can be cached into a single texture.
-	for (const TilemapLayer& layer : tileLayers) {
-		if (layer.get_z_index() >= 0) {
-			continue;
-		}
-
-		glm::vec2 currentCoordinates = { 0, 0 };
-		const Texture& texture = tileset.get_texture();
-
-		for (u8 tile : layer.get_data()) {
-			// Data is 0 for transparent tiles.
-			if (tile != 0) {
-				SDL_Rect srcRect = tileset.get_tile_rect(tile - 1); // Offset by 1 to account for 0 being transparent.
-				SDL_Rect destRect = to_rect(currentCoordinates * tileDimensions * scale, tileDimensions * scale);
-
-				SDL_RenderCopy(texture.get_renderer(), texture.get(), &srcRect, &destRect);
-			}
-
-			currentCoordinates.x += 1;
-			if (currentCoordinates.x == mapDimensions.x) {
-				currentCoordinates.x = 0;
-				currentCoordinates.y += 1;
-			}
-		}
-	}
+	SDL_Rect dstRect = to_rect({ 0, 0 }, firstPassTexture.dimensions * scale);
+	SDL_RenderCopy(firstPassTexture.get_renderer(), firstPassTexture.get(), nullptr, &dstRect);
 
 	// Renders all the layers with z == 0, where the tile y-position is
 	// less than the player position.
@@ -128,12 +108,6 @@ void Tilemap::render_second_pass(const glm::vec2& playerPosition, f32 scale) {
 	}
 	
 	// Renders all the layers with z > 0.
-	// TODO(fkp): These can be cached into a single texture.
-	for (const TilemapLayer& layer : tileLayers) {
-		if (layer.get_z_index() <= 0) {
-			continue;
-		}
-
-		// TODO(fkp): Render.
-	}
+	SDL_Rect dstRect = to_rect({ 0, 0 }, secondPassTexture.dimensions * scale);
+	SDL_RenderCopy(secondPassTexture.get_renderer(), secondPassTexture.get(), nullptr, &dstRect);
 }

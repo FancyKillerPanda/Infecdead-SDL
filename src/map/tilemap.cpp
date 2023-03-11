@@ -72,7 +72,7 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 
 	// Renders applicable layers to the textures.
 	for (const TilemapLayer& layer : tileLayers) {
-		if (layer.get_z_index() < 0) {
+		if (layer.get_z_index() <= 0) {
 			layer.render_to_texture(firstPassTexture, tileset, tileDimensions);
 		} else if (layer.get_z_index() > 0) {
 			layer.render_to_texture(secondPassTexture, tileset, tileDimensions);
@@ -80,33 +80,13 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	}
 }
 
-void Tilemap::render_first_pass(const glm::vec2& playerPosition, f32 scale) {
-	// Renders all the layers with z < 0.
+void Tilemap::render_first_pass(f32 scale) {
+	// Renders all the layers with z <= 0.
 	SDL_Rect dstRect = to_rect({ 0, 0 }, firstPassTexture.dimensions * scale);
 	SDL_RenderCopy(firstPassTexture.get_renderer(), firstPassTexture.get(), nullptr, &dstRect);
-
-	// Renders all the layers with z == 0, where the tile y-position is
-	// less than the player position.
-	for (const TilemapLayer& layer : tileLayers) {
-		if (layer.get_z_index() != 0) {
-			continue;
-		}
-
-		// TODO(fkp): Render.
-	}
 }
 
-void Tilemap::render_second_pass(const glm::vec2& playerPosition, f32 scale) {
-	// Renders all the layers with z == 0, where the tile y-position is
-	// greater than the player position.
-	for (const TilemapLayer& layer : tileLayers) {
-		if (layer.get_z_index() != 0) {
-			continue;
-		}
-
-		// TODO(fkp): Render.
-	}
-	
+void Tilemap::render_second_pass(f32 scale) {
 	// Renders all the layers with z > 0.
 	SDL_Rect dstRect = to_rect({ 0, 0 }, secondPassTexture.dimensions * scale);
 	SDL_RenderCopy(secondPassTexture.get_renderer(), secondPassTexture.get(), nullptr, &dstRect);

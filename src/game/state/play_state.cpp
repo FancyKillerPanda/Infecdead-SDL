@@ -20,7 +20,7 @@ void PlayState::render(f64 deltaTime) {
 		animation->render(game.get_renderer(), deltaTime);
 	}
 
-	worldMap.render_first_pass(player.get_world_position() / worldMap.get_tile_dimensions(), 2.0);
+	worldMap.render_first_pass(2.0);
 	player.render(deltaTime);
-	worldMap.render_second_pass(player.get_world_position() / worldMap.get_tile_dimensions(), 2.0);
+	worldMap.render_second_pass(2.0);
 }

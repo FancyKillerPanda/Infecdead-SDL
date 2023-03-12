@@ -17,7 +17,7 @@ set(HEADERS
 
 	animation/animation.hpp animation/fade.hpp animation/logo.hpp animation/spritesheet_animation.hpp
 
-	game/game.hpp
+	game/game.hpp game/camera.hpp
 	game/entity/character.hpp game/entity/player.hpp
 	game/state/logo_state.hpp game/state/main_menu_state.hpp game/state/play_state.hpp game/state/state.hpp
 
@@ -34,7 +34,7 @@ set(SOURCES
 
 	animation/fade.cpp animation/logo.cpp animation/spritesheet_animation.cpp
 
-	game/game.cpp
+	game/game.cpp game/camera.cpp
 	game/entity/character.cpp game/entity/player.cpp
 	game/state/logo_state.cpp game/state/main_menu_state.cpp game/state/play_state.cpp
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/camera.hpp"
 #include "game/entity/player.hpp"
 #include "game/state/state.hpp"
 #include "map/tileset.hpp"
@@ -15,7 +16,8 @@ public:
 
 private:
 	Player player;
-
 	Tileset tileset;
-	Tilemap worldMap;
+
+    Tilemap worldMap;
+    Camera camera;
 };

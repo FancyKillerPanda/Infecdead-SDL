@@ -2,7 +2,7 @@
 #include "game/state/play_state.hpp"
 
 PlayState::PlayState(Game& game) 
-	: State(game), player(game, { 10, 10 }),
+	: State(game), camera(worldMap, player), player(game, { 10, 10 }),
 	  tileset(game.get_renderer(), "res/maps/tileset.json"), worldMap(tileset, "res/maps/world.json") {
 }
 
@@ -13,6 +13,7 @@ void PlayState::update() {
 	animate();
 
 	player.update();
+    camera.update();
 }
 
 void PlayState::render(f64 deltaTime) {
@@ -20,7 +21,7 @@ void PlayState::render(f64 deltaTime) {
 		animation->render(game.get_renderer(), deltaTime);
 	}
 
-	worldMap.render_first_pass(2.0);
+	worldMap.render_first_pass(worldMap.get_default_scale(), camera);
 	player.render(deltaTime);
 	worldMap.render_second_pass(2.0);
 }

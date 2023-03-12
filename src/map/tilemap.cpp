@@ -1,6 +1,5 @@
 #include <algorithm>
 
-#include "SDL_render.h"
 #include "map/tilemap.hpp"
 #include "utility/log.hpp"
 #include "utility/utility.hpp"
@@ -80,14 +79,20 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	}
 }
 
-void Tilemap::render_first_pass(f32 scale) {
-	// Renders all the layers with z <= 0.
-	SDL_Rect dstRect = to_rect({ 0, 0 }, firstPassTexture.dimensions * scale);
-	SDL_RenderCopy(firstPassTexture.get_renderer(), firstPassTexture.get(), nullptr, &dstRect);
+void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
+    glm::vec2 viewport = { VIEWPORT_WIDTH, VIEWPORT_HEIGHT };
+    glm::vec2 visibleWorldDimensions = viewport / scale; // How much of the world is visible, in world coordinates (i.e. 16x16).
+
+    SDL_Rect srcRect = to_rect(camera.get_target() - (visibleWorldDimensions / 2.0f), visibleWorldDimensions);
+    printf("%d, %d, %d, %d\n", srcRect.x, srcRect.y, srcRect.w, srcRect.h);
+    SDL_Rect dstRect = to_rect({ 0, 0 }, viewport);
+
+    // Renders all the layers with z <= 0.
+    SDL_RenderCopy(firstPassTexture.get_renderer(), firstPassTexture.get(), &srcRect, &dstRect);
 }
 
 void Tilemap::render_second_pass(f32 scale) {
 	// Renders all the layers with z > 0.
 	SDL_Rect dstRect = to_rect({ 0, 0 }, secondPassTexture.dimensions * scale);
-	SDL_RenderCopy(secondPassTexture.get_renderer(), secondPassTexture.get(), nullptr, &dstRect);
+	//SDL_RenderCopy(secondPassTexture.get_renderer(), secondPassTexture.get(), nullptr, &dstRect);
 }

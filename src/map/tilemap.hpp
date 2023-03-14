@@ -20,8 +20,8 @@ public:
 	void render_first_pass(f32 scale, const Camera& camera); // Renders everything below the player.
 	void render_second_pass(f32 scale); // Renders everything above the player.
 
+    const Tileset& get_tileset() const { return tileset; }
     const glm::vec2& get_map_dimensions() const { return mapDimensions; }
-	const glm::vec2& get_tile_dimensions() const { return tileDimensions; }
     const f32 get_default_scale() const { return 2.0; } // TODO(fkp): Read this from the map data.
 
 private:
@@ -29,7 +29,6 @@ private:
 	std::vector<TilemapLayer> tileLayers;
 
 	glm::vec2 mapDimensions; // Number of columns and rows.
-	glm::vec2 tileDimensions; // Internal size of each tile. Tilemap can be rendered at a different size (scaled).
 
 	Texture firstPassTexture;
 	Texture secondPassTexture;

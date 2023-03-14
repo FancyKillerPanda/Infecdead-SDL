@@ -14,6 +14,7 @@ public:
 	Tileset& operator=(const Tileset&) = delete;
 
 	const Texture& get_texture() const { return texture; }
+    const glm::vec2& get_tile_dimensions() const { return tileDimensions; }
 	SDL_Rect get_tile_rect(u32 index) const;
 
 private:

@@ -27,7 +27,6 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	delete[] buffer;
 
 	mapDimensions = { data["width"], data["height"] };
-	tileDimensions = { data["tilewidth"], data["tileheight"] };
 
 	for (json layerData : data["layers"]) {
 		TilemapLayer layer { layerData };
@@ -49,7 +48,7 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 
 	// Creates textures for layers which can be rendered whole.
 	SDL_Renderer* renderer = tileset.get_texture().get_renderer();
-	glm::vec2 textureDimensions = mapDimensions * tileDimensions;
+	glm::vec2 textureDimensions = mapDimensions * tileset.get_tile_dimensions();
 	
 	SDL_Texture* firstTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
 												  (s32) textureDimensions.x, (s32) textureDimensions.y);
@@ -72,9 +71,9 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	// Renders applicable layers to the textures.
 	for (const TilemapLayer& layer : tileLayers) {
 		if (layer.get_z_index() <= 0) {
-			layer.render_to_texture(firstPassTexture, tileset, tileDimensions);
+			layer.render_to_texture(firstPassTexture, tileset, tileset.get_tile_dimensions());
 		} else if (layer.get_z_index() > 0) {
-			layer.render_to_texture(secondPassTexture, tileset, tileDimensions);
+			layer.render_to_texture(secondPassTexture, tileset, tileset.get_tile_dimensions());
 		}
 	}
 }

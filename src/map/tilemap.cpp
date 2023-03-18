@@ -83,7 +83,7 @@ void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
     glm::vec2 visibleWorldDimensions = viewport / scale; // How much of the world is visible, in world coordinates (i.e. 16x16).
 
     SDL_Rect srcRect = to_rect(camera.get_target() - (visibleWorldDimensions / 2.0f), visibleWorldDimensions);
-    printf("%d, %d, %d, %d\n", srcRect.x, srcRect.y, srcRect.w, srcRect.h);
+    // printf("%d, %d, %d, %d\n", srcRect.x, srcRect.y, srcRect.w, srcRect.h);
     SDL_Rect dstRect = to_rect({ 0, 0 }, viewport);
 
     // Renders all the layers with z <= 0.

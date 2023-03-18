@@ -6,7 +6,7 @@
 
 class Player : public Character { 
 public:
-	Player(Game& game, glm::vec2 position);
+	Player(Game& game, const Tilemap* tilemap, glm::vec2 position);
 
 	void handle_input(); // Will be called once per update. Looks at keyboard state rather than current event.
 	void update() override;

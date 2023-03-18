@@ -2,7 +2,7 @@
 #include "game/state/play_state.hpp"
 
 PlayState::PlayState(Game& game) 
-	: State(game), camera(worldMap, player), player(game, { 10, 10 }),
+	: State(game), camera(worldMap, player), player(game, &worldMap, { 10, 10 }),
 	  tileset(game.get_renderer(), "res/maps/tileset.json"), worldMap(tileset, "res/maps/world.json") {
 }
 

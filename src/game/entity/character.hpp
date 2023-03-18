@@ -6,6 +6,7 @@
 #include "graphics/spritesheet.hpp"
 
 class Game;
+class Tilemap;
 
 class Character {
 public:
@@ -14,7 +15,7 @@ public:
 	};
 
 public:
-	Character(Game& game, Type type, const u8* walkSpritesheetPath, glm::vec2 position);
+	Character(Game& game, Type type, const u8* walkSpritesheetPath, const Tilemap* tilemap, glm::vec2 position);
 	virtual ~Character() {}
 
 	virtual void update() = 0;
@@ -30,7 +31,8 @@ protected:
 	Game& game;
 	Type type;
 
-	glm::vec2 worldPosition {};
+    const Tilemap* currentTilemap = nullptr;
+	glm::vec2 worldPosition {}; // World is in the range [0, number of tiles) in each direction.
 	f64 rotation = 0.0;
 
 	glm::vec2 velocity {};

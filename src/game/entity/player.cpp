@@ -1,8 +1,8 @@
 #include "game/game.hpp"
 #include "game/entity/player.hpp"
 
-Player::Player(Game& game, glm::vec2 position) 
-	: Character(game, Type::Player, "res/characters/player.png", position) {
+Player::Player(Game& game, const Tilemap* tilemap, glm::vec2 position) 
+	: Character(game, Type::Player, "res/characters/player.png", tilemap, position) {
 }
 
 void Player::handle_input() {

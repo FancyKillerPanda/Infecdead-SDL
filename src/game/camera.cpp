@@ -12,6 +12,6 @@ void Camera::update() {
     glm::vec2 mapDimensionsWorldSpace = tilemap.get_map_dimensions() * tilemap.get_tileset().get_tile_dimensions();
 
     targetWorldPosition = characterToFollow.get_world_position();
-    printf("%f, %f\n", targetWorldPosition.x, targetWorldPosition.y);
+    // printf("%f, %f\n", targetWorldPosition.x, targetWorldPosition.y);
     targetWorldPosition = glm::clamp(targetWorldPosition, worldSpaceViewport / 2.0f, mapDimensionsWorldSpace - (worldSpaceViewport / 2.0f));
 }

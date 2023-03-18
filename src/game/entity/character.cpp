@@ -1,8 +1,9 @@
 #include "game/game.hpp"
 #include "game/entity/character.hpp"
+#include "map/tilemap.hpp"
 
-Character::Character(Game& game, Type type, const u8* walkSpritesheetPath, glm::vec2 position) 
-	: game(game), type(type), worldPosition(position) {
+Character::Character(Game& game, Type type, const u8* walkSpritesheetPath, const Tilemap* tilemap, glm::vec2 position)
+	: game(game), type(type), currentTilemap(tilemap), worldPosition(position) {
 	walkSpritesheet = new Spritesheet(Texture { game.get_renderer(), walkSpritesheetPath }, { 16, 16 }, 32, 4);
 	walkSpritesheet->animation = new SpritesheetAnimation(*walkSpritesheet, {}, 15);
 
@@ -30,5 +31,5 @@ void Character::update_texture() {
 }
 
 void Character::render(f64 deltaTime) {
-	currentSpritesheet->render(worldPosition * glm::vec2 { 32, 32 }, { 64, 64 });
+	currentSpritesheet->render(worldPosition, glm::vec2 { 32, 32 } * currentTilemap->get_default_scale());
 }

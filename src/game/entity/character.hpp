@@ -7,6 +7,7 @@
 
 class Game;
 class Tilemap;
+class Camera;
 
 class Character {
 public:
@@ -19,7 +20,7 @@ public:
 	virtual ~Character() {}
 
 	virtual void update() = 0;
-	virtual void render(f64 deltaTime);
+	virtual void render(f64 deltaTime, const Camera& camera);
 
 	const glm::vec2& get_world_position() const { return worldPosition; }
 

@@ -30,9 +30,9 @@ void Character::update_texture() {
 	currentSpritesheet->set_current_subrect_index((row * currentSpritesheet->get_subrects_per_row()) + column);
 }
 
-void Character::render(f64 deltaTime) {
+void Character::render(f64 deltaTime, const Camera& camera) {
 	f32 scale = currentTilemap->get_default_scale();
 	const glm::vec2& tileDimensions = currentTilemap->get_tileset().get_tile_dimensions();
 	
-	currentSpritesheet->render(worldPosition * tileDimensions * scale, glm::vec2 { 32, 32 } * scale);
+	currentSpritesheet->render((worldPosition - camera.get_view_offset()) * tileDimensions * scale, glm::vec2 { 32, 32 } * scale);
 }

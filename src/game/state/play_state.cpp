@@ -22,6 +22,6 @@ void PlayState::render(f64 deltaTime) {
 	}
 
 	worldMap.render_first_pass(worldMap.get_default_scale(), camera);
-	player.render(deltaTime);
+	player.render(deltaTime, camera);
 	worldMap.render_second_pass(2.0);
 }

@@ -79,6 +79,14 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 }
 
 void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
+	render_internal(scale, camera, firstPassTexture);
+}
+
+void Tilemap::render_second_pass(f32 scale, const Camera& camera) {
+	render_internal(scale, camera, secondPassTexture);
+}
+
+void Tilemap::render_internal(f32 scale, const Camera& camera, const Texture& texture) {
     glm::vec2 viewport = { VIEWPORT_WIDTH, VIEWPORT_HEIGHT };
     glm::vec2 scaledViewport = viewport / scale;
 
@@ -86,11 +94,5 @@ void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
     SDL_Rect dstRect = to_rect({ 0, 0 }, viewport);
 
     // Renders all the layers with z <= 0.
-    SDL_RenderCopy(firstPassTexture.get_renderer(), firstPassTexture.get(), &srcRect, &dstRect);
-}
-
-void Tilemap::render_second_pass(f32 scale) {
-	// Renders all the layers with z > 0.
-	SDL_Rect dstRect = to_rect({ 0, 0 }, secondPassTexture.dimensions * scale);
-	//SDL_RenderCopy(secondPassTexture.get_renderer(), secondPassTexture.get(), nullptr, &dstRect);
+    SDL_RenderCopy(texture.get_renderer(), texture.get(), &srcRect, &dstRect);
 }

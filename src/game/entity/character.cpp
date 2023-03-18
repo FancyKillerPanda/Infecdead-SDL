@@ -31,5 +31,8 @@ void Character::update_texture() {
 }
 
 void Character::render(f64 deltaTime) {
-	currentSpritesheet->render(worldPosition, glm::vec2 { 32, 32 } * currentTilemap->get_default_scale());
+	f32 scale = currentTilemap->get_default_scale();
+	const glm::vec2& tileDimensions = currentTilemap->get_tileset().get_tile_dimensions();
+	
+	currentSpritesheet->render(worldPosition * tileDimensions * scale, glm::vec2 { 32, 32 } * scale);
 }

@@ -28,6 +28,7 @@ public:
 
 public:
 	TilemapLayerType type;
+	std::string name; // For debugging.
 
 private:
 	std::vector<u8> data;

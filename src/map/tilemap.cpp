@@ -70,7 +70,7 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 
 	// Renders applicable layers to the textures.
 	for (const TilemapLayer& layer : tileLayers) {
-		if (layer.get_z_index() <= 0) {
+		if (layer.get_z_index() < 0) {
 			layer.render_to_texture(firstPassTexture, tileset, tileset.get_tile_dimensions());
 		} else if (layer.get_z_index() > 0) {
 			layer.render_to_texture(secondPassTexture, tileset, tileset.get_tile_dimensions());
@@ -80,6 +80,36 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 
 void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
 	render_internal(scale, camera, firstPassTexture);
+
+	for (const TilemapLayer& layer : tileLayers) {
+		if (layer.get_z_index() != 0) {
+			continue;
+		}
+		
+		const std::vector<u8>& layerData = layer.get_data();
+		if (layerData.size() == 0) {
+			continue; // TODO(fkp): Figure out why there's a layer with no data.
+		}
+
+		for (u32 viewRow = 0; viewRow < camera.get_world_space_viewport().y; viewRow++) {
+			for (u32 viewCol = 0; viewCol < camera.get_world_space_viewport().x; viewCol++) {
+				glm::vec2 viewOffset = { (u32) camera.get_view_offset().x, (u32) camera.get_view_offset().y };
+				glm::vec2 position = glm::vec2 { viewCol, viewRow } + viewOffset;
+				
+				u32 index = ((u32) position.y * layer.get_dimensions().x) + (u32) position.x;
+				u8 tile = layerData[index];
+
+				if (tile != 0) {
+					glm::vec2 tileSize = tileset.get_tile_dimensions() * scale;
+					SDL_Rect srcRect = tileset.get_tile_rect(tile - 1); // Offset by 1 to account for 0 being transparent.
+					SDL_Rect destRect = to_rect((position - camera.get_view_offset()) * tileSize, tileSize);
+
+					const Texture& tilesetTexture = tileset.get_texture();
+					SDL_RenderCopy(tilesetTexture.get_renderer(), tilesetTexture.get(), &srcRect, &destRect);
+				}
+			}
+		}
+	}
 }
 
 void Tilemap::render_second_pass(f32 scale, const Camera& camera) {

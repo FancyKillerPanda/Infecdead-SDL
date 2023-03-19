@@ -14,7 +14,6 @@ public:
     const glm::vec2& get_target() const { return targetWorldPosition; }
     glm::vec2 get_view_offset() const;
 
-private:
     glm::vec2 get_world_space_viewport() const;
 
 private:

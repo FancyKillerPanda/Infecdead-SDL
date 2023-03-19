@@ -25,7 +25,7 @@ set(HEADERS
 
 	map/layer.hpp map/tilemap.hpp map/tileset.hpp
 	
-	ui/button_group.hpp
+	ui/button_group.hpp ui/inventory_slot.hpp
 
 	utility/log.hpp utility/utility.hpp
 )
@@ -42,7 +42,7 @@ set(SOURCES
 
 	map/layer.cpp map/tilemap.cpp map/tileset.cpp
 	
-	ui/button_group.cpp
+	ui/button_group.cpp ui/inventory_slot.cpp
 	
 	utility/log.cpp
 )

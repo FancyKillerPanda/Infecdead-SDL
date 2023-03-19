@@ -2,7 +2,8 @@
 #include "game/entity/player.hpp"
 
 Player::Player(Game& game, const Tilemap* tilemap, glm::vec2 position) 
-	: Character(game, Type::Player, "res/characters/player.png", tilemap, position) {
+	: Character(game, Type::Player, "res/characters/player.png", tilemap, position),
+	  inventory { game, game, game, game } {
 }
 
 void Player::handle_input() {
@@ -41,6 +42,15 @@ void Player::update() {
 	update_texture();
 }
 
-// void Player::render(f64 deltaTime) {
-//
-// }
+void Player::render(f64 deltaTime, const Camera& camera) {
+	Character::render(deltaTime, camera);
+
+	// Renders inventory.
+	glm::vec2 centre = { VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT * 7 / 8 };
+	glm::vec2 spacing = { VIEWPORT_WIDTH * 1 / 16, 0 };
+
+	for (u32 i = 0; i < NUM_INVENTORY_SLOTS; i++) {
+		glm::vec2 position = centre - ((NUM_INVENTORY_SLOTS / 2.0f) * spacing) + ((f32) i * spacing);
+		inventory[i].render(position, false);
+	}
+}

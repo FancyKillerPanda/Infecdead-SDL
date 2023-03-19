@@ -19,6 +19,7 @@ public:
 	Character(Game& game, Type type, const u8* walkSpritesheetPath, const Tilemap* tilemap, glm::vec2 position);
 	virtual ~Character() {}
 
+	virtual void handle_input(const SDL_Event& event) {};
 	virtual void update() = 0;
 	virtual void render(f64 deltaTime, const Camera& camera);
 

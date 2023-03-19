@@ -3,7 +3,7 @@
 
 InventorySlot::InventorySlot(Game& game) 
 	: baseTexture(game.get_renderer(), "res/ui/inventory_slot_background.png"),
-	  selectedTexture(game.get_renderer(), "res/ui/inventory_slot_selected.png") {
+	  selectedTexture(game.get_renderer(), "res/ui/inventory_slot_background_selected.png") {
 }
 
 void InventorySlot::render(glm::vec2 position, bool isSelected) {

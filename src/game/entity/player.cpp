@@ -6,7 +6,23 @@ Player::Player(Game& game, const Tilemap* tilemap, glm::vec2 position)
 	  inventory { game, game, game, game } {
 }
 
-void Player::handle_input() {
+void Player::handle_input(const SDL_Event& event) {
+	switch (event.type) {
+	case SDL_KEYUP:
+		switch (event.key.keysym.sym) {
+		case SDLK_1:
+		case SDLK_2:
+		case SDLK_3:
+		case SDLK_4:
+			inventorySelection = event.key.keysym.sym - SDLK_1;
+			break;
+		}
+
+		break;
+	}
+}
+
+void Player::handle_per_frame_input() {
 	f64 rotationRadians = glm::radians(rotation);
 	glm::vec2 rotationVector = glm::normalize(glm::vec2 { cos(rotationRadians), -sin(rotationRadians) });
 	const Uint8* keyboard = SDL_GetKeyboardState(nullptr);
@@ -30,7 +46,7 @@ void Player::handle_input() {
 }
 
 void Player::update() {
-	handle_input();
+	handle_per_frame_input();
 
 	velocity += acceleration;
 	velocity *= get_friction();
@@ -51,6 +67,6 @@ void Player::render(f64 deltaTime, const Camera& camera) {
 
 	for (u32 i = 0; i < NUM_INVENTORY_SLOTS; i++) {
 		glm::vec2 position = centre - ((NUM_INVENTORY_SLOTS / 2.0f) * spacing) + ((f32) i * spacing);
-		inventory[i].render(position, false);
+		inventory[i].render(position, inventorySelection == i);
 	}
 }

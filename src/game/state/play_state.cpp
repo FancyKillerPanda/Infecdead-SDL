@@ -7,6 +7,7 @@ PlayState::PlayState(Game& game)
 }
 
 void PlayState::handle_input(const SDL_Event& event) {
+	player.handle_input(event);
 }
 
 void PlayState::update() {

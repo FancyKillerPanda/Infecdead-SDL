@@ -1,5 +1,6 @@
 #include <algorithm>
 
+#include "game/entity/player.hpp"
 #include "map/tilemap.hpp"
 #include "utility/log.hpp"
 #include "utility/utility.hpp"
@@ -78,7 +79,7 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	}
 }
 
-void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
+void Tilemap::render_first_pass(f32 scale, const Camera& camera, const Player& player) {
 	render_internal(scale, camera, firstPassTexture);
 
 	for (const TilemapLayer& layer : tileLayers) {
@@ -91,10 +92,17 @@ void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
 			continue; // TODO(fkp): Figure out why there's a layer with no data.
 		}
 
+		glm::vec2 playerBottom = player.get_world_position();
+		playerBottom.y += player.get_dimensions().y / 2.0f;
+
 		for (u32 viewRow = 0; viewRow < camera.get_world_space_viewport().y; viewRow++) {
 			for (u32 viewCol = 0; viewCol < camera.get_world_space_viewport().x; viewCol++) {
 				glm::vec2 viewOffset = { (u32) camera.get_view_offset().x, (u32) camera.get_view_offset().y };
 				glm::vec2 position = glm::vec2 { viewCol, viewRow } + viewOffset;
+
+				if (position.y >= (u32) playerBottom.y) {
+					goto endLoop;
+				}
 				
 				u32 index = ((u32) position.y * layer.get_dimensions().x) + (u32) position.x;
 				u8 tile = layerData[index];
@@ -109,6 +117,9 @@ void Tilemap::render_first_pass(f32 scale, const Camera& camera) {
 				}
 			}
 		}
+
+	endLoop:
+		;
 	}
 }
 

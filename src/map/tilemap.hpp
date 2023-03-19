@@ -11,13 +11,15 @@
 #include "map/layer.hpp"
 #include "map/tileset.hpp"
 
+class Player;
+
 class Tilemap {
 public:
 	Tilemap(const Tileset& tileset, const u8* filepath);
 	Tilemap(const Tilemap&) = delete;
 	Tilemap& operator=(const Tilemap&) = delete;
 
-	void render_first_pass(f32 scale, const Camera& camera); // Renders everything below the player.
+	void render_first_pass(f32 scale, const Camera& camera, const Player& player); // Renders everything below the player.
 	void render_second_pass(f32 scale, const Camera& camera); // Renders everything above the player.
 
     const Tileset& get_tileset() const { return tileset; }

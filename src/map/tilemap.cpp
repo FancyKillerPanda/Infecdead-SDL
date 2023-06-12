@@ -79,6 +79,7 @@ Tilemap::Tilemap(const Tileset& tileset, const u8* filepath)
 	}
 }
 
+// TODO(fkp): Code similarity/duplication with second pass.
 void Tilemap::render_first_pass(f32 scale, const Camera& camera, const Player& player) {
 	render_internal(scale, camera, firstPassTexture);
 
@@ -123,7 +124,48 @@ void Tilemap::render_first_pass(f32 scale, const Camera& camera, const Player& p
 	}
 }
 
-void Tilemap::render_second_pass(f32 scale, const Camera& camera) {
+// TODO(fkp): Code similarity/duplication with first pass.
+void Tilemap::render_second_pass(f32 scale, const Camera& camera, const Player& player) {
+	for (const TilemapLayer& layer : tileLayers) {
+		if (layer.get_z_index() != 0) {
+			continue;
+		}
+		
+		const std::vector<u8>& layerData = layer.get_data();
+		if (layerData.size() == 0) {
+			continue; // TODO(fkp): Figure out why there's a layer with no data.
+		}
+
+		glm::vec2 playerBottom = player.get_world_position();
+		playerBottom.y += player.get_dimensions().y / 2.0f;
+
+		for (u32 viewRow = 0; viewRow < camera.get_world_space_viewport().y; viewRow++) {
+			for (u32 viewCol = 0; viewCol < camera.get_world_space_viewport().x; viewCol++) {
+				glm::vec2 viewOffset = { (u32) camera.get_view_offset().x, (u32) camera.get_view_offset().y };
+				glm::vec2 position = glm::vec2 { viewCol, viewRow } + viewOffset;
+
+				if (position.y < (u32) playerBottom.y) {
+					goto nextRow;
+				}
+				
+				u32 index = ((u32) position.y * layer.get_dimensions().x) + (u32) position.x;
+				u8 tile = layerData[index];
+
+				if (tile != 0) {
+					glm::vec2 tileSize = tileset.get_tile_dimensions() * scale;
+					SDL_Rect srcRect = tileset.get_tile_rect(tile - 1); // Offset by 1 to account for 0 being transparent.
+					SDL_Rect destRect = to_rect((position - camera.get_view_offset()) * tileSize, tileSize);
+
+					const Texture& tilesetTexture = tileset.get_texture();
+					SDL_RenderCopy(tilesetTexture.get_renderer(), tilesetTexture.get(), &srcRect, &destRect);
+				}
+			}
+
+		nextRow:
+			;
+		}
+	}
+	
 	render_internal(scale, camera, secondPassTexture);
 }
 

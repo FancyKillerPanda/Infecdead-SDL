@@ -20,7 +20,7 @@ public:
 	Tilemap& operator=(const Tilemap&) = delete;
 
 	void render_first_pass(f32 scale, const Camera& camera, const Player& player); // Renders everything below the player.
-	void render_second_pass(f32 scale, const Camera& camera); // Renders everything above the player.
+	void render_second_pass(f32 scale, const Camera& camera, const Player& player); // Renders everything above the player.
 
     const Tileset& get_tileset() const { return tileset; }
     const glm::vec2& get_map_dimensions() const { return mapDimensions; }

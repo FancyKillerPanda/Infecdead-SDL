@@ -58,9 +58,7 @@ void Player::update() {
 	update_texture();
 }
 
-void Player::render(f64 deltaTime, const Camera& camera) {
-	Character::render(deltaTime, camera);
-
+void Player::render_inventory(f64 deltaTime, const Camera& camera) {
 	// Renders inventory.
 	glm::vec2 centre = { VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT * 7 / 8 };
 	glm::vec2 spacing = { VIEWPORT_WIDTH * 1 / 16, 0 };

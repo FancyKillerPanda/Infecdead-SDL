@@ -22,7 +22,11 @@ void PlayState::render(f64 deltaTime) {
 		animation->render(game.get_renderer(), deltaTime);
 	}
 
+	// Renders the world.
 	worldMap.render_first_pass(worldMap.get_default_scale(), camera, player);
 	player.render(deltaTime, camera);
 	worldMap.render_second_pass(worldMap.get_default_scale(), camera, player);
+
+	// Renders UI.
+	player.render_inventory(deltaTime, camera);
 }

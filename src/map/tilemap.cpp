@@ -96,25 +96,32 @@ void Tilemap::render_first_pass(f32 scale, const Camera& camera, const Player& p
 		glm::vec2 playerBottom = player.get_world_position();
 		playerBottom.y += player.get_dimensions().y / 2.0f;
 
-		for (u32 viewRow = 0; viewRow < camera.get_world_space_viewport().y; viewRow++) {
-			for (u32 viewCol = 0; viewCol < camera.get_world_space_viewport().x; viewCol++) {
-				glm::vec2 viewOffset = { (u32) camera.get_view_offset().x, (u32) camera.get_view_offset().y };
+		glm::vec2 worldSpaceViewport = camera.get_world_space_viewport();
+		glm::vec2 cameraViewOffset = camera.get_view_offset();
+		glm::vec2 viewOffset = { (u32) cameraViewOffset.x, (u32) cameraViewOffset.y };
+	
+		const glm::vec2& layerDimensions = layer.get_dimensions();
+		const glm::vec2& tileSize = tileset.get_tile_dimensions() * scale;
+
+		SDL_Renderer* renderer = tileset.get_texture().get_renderer();
+		SDL_Texture* tilesetTexture = tileset.get_texture().get();
+
+		for (u32 viewRow = 0; viewRow < worldSpaceViewport.y; viewRow++) {
+			for (u32 viewCol = 0; viewCol < worldSpaceViewport.x; viewCol++) {
 				glm::vec2 position = glm::vec2 { viewCol, viewRow } + viewOffset;
 
 				if (position.y >= (u32) playerBottom.y) {
 					goto endLoop;
 				}
 				
-				u32 index = ((u32) position.y * layer.get_dimensions().x) + (u32) position.x;
+				u32 index = ((u32) position.y * layerDimensions.x) + (u32) position.x;
 				u8 tile = layerData[index];
 
 				if (tile != 0) {
-					glm::vec2 tileSize = tileset.get_tile_dimensions() * scale;
 					SDL_Rect srcRect = tileset.get_tile_rect(tile - 1); // Offset by 1 to account for 0 being transparent.
-					SDL_Rect destRect = to_rect((position - camera.get_view_offset()) * tileSize, tileSize);
+					SDL_Rect destRect = to_rect((position - cameraViewOffset) * tileSize, tileSize);
 
-					const Texture& tilesetTexture = tileset.get_texture();
-					SDL_RenderCopy(tilesetTexture.get_renderer(), tilesetTexture.get(), &srcRect, &destRect);
+					SDL_RenderCopy(renderer, tilesetTexture, &srcRect, &destRect);
 				}
 			}
 		}
@@ -139,25 +146,32 @@ void Tilemap::render_second_pass(f32 scale, const Camera& camera, const Player& 
 		glm::vec2 playerBottom = player.get_world_position();
 		playerBottom.y += player.get_dimensions().y / 2.0f;
 
-		for (u32 viewRow = 0; viewRow < camera.get_world_space_viewport().y; viewRow++) {
-			for (u32 viewCol = 0; viewCol < camera.get_world_space_viewport().x; viewCol++) {
-				glm::vec2 viewOffset = { (u32) camera.get_view_offset().x, (u32) camera.get_view_offset().y };
+		glm::vec2 worldSpaceViewport = camera.get_world_space_viewport();
+		glm::vec2 cameraViewOffset = camera.get_view_offset();
+		glm::vec2 viewOffset = { (u32) cameraViewOffset.x, (u32) cameraViewOffset.y };
+
+		const glm::vec2& layerDimensions = layer.get_dimensions();
+		const glm::vec2& tileSize = tileset.get_tile_dimensions() * scale;
+
+		SDL_Renderer* renderer = tileset.get_texture().get_renderer();
+		SDL_Texture* tilesetTexture = tileset.get_texture().get();
+
+		for (u32 viewRow = 0; viewRow < worldSpaceViewport.y; viewRow++) {
+			for (u32 viewCol = 0; viewCol < worldSpaceViewport.x; viewCol++) {
 				glm::vec2 position = glm::vec2 { viewCol, viewRow } + viewOffset;
 
 				if (position.y < (u32) playerBottom.y) {
 					goto nextRow;
 				}
 				
-				u32 index = ((u32) position.y * layer.get_dimensions().x) + (u32) position.x;
+				u32 index = ((u32) position.y * layerDimensions.x) + (u32) position.x;
 				u8 tile = layerData[index];
 
 				if (tile != 0) {
-					glm::vec2 tileSize = tileset.get_tile_dimensions() * scale;
 					SDL_Rect srcRect = tileset.get_tile_rect(tile - 1); // Offset by 1 to account for 0 being transparent.
-					SDL_Rect destRect = to_rect((position - camera.get_view_offset()) * tileSize, tileSize);
+					SDL_Rect destRect = to_rect((position - cameraViewOffset) * tileSize, tileSize);
 
-					const Texture& tilesetTexture = tileset.get_texture();
-					SDL_RenderCopy(tilesetTexture.get_renderer(), tilesetTexture.get(), &srcRect, &destRect);
+					SDL_RenderCopy(renderer, tilesetTexture, &srcRect, &destRect);
 				}
 			}
 
